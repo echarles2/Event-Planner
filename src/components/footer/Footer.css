@@ -1,5 +1,6 @@
 footer {
-  position: fixed;
   bottom: 0;
+  width: auto;
   text-align: center;
+  color: #000;
 }

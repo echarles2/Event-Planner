@@ -10,7 +10,7 @@ function Footer() {
     return(
         <section className="footer">
             <footer>
-                <p>What's the Move?</p>
+                <p>what's the move?</p>
                 <p>
                     {teamMembers.map((member, index) => (
                         <span key={member}>
