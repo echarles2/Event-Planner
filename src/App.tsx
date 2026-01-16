@@ -1,12 +1,15 @@
+import React from "react";
+import "./App.css";
 import Header from './components/header/Header'
-import './App.css'
+import CalendarComponent from "./components/calendar-component/CalendarComponent";
+import Footer from "./components/footer/Footer";
 
-function App() {
+export default function App() {
   return (
-    <>
-    <Header />
-    </>
-  )
+    <main>
+      <Header />
+      <CalendarComponent />
+      <Footer />
+    </main>
+  );
 }
-
-export default App
