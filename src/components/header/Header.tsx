@@ -1,3 +1,5 @@
+import "./Header.css"
+
 const navBarItems: string[] = [
     "Home",
     "Events",
@@ -9,6 +11,7 @@ function Header() {
         <section className="header">
             <header>
                 <h1>what's the move</h1>
+                <h3>make moves, not excuses</h3>
                 <nav>
                     <ul> 
                     { navBarItems.map((item) => (
