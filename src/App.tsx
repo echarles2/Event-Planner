@@ -1,6 +1,13 @@
 import React from "react";
-import CalendarComponent from "./components/calendar-component";
+import "./App.css";
+import CalendarComponent from "./components/calendar-component/CalendarComponent";
+import Footer from "./components/footer/Footer";
 
 export default function App() {
-  return React.createElement("main", null, React.createElement(CalendarComponent, null));
+  return (
+    <main>
+      <CalendarComponent />
+      <Footer />
+    </main>
+  );
 }
