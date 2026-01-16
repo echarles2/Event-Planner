@@ -3,7 +3,7 @@
 .calendar-component {
   --cal-border: navajowhite;
   --cal-bg: transparent;
-  --cal-header-bg: rgba(255, 222, 173, 0.08); /* subtle */
+  --cal-header-bg: rgba(255, 222, 173, 0.08);
   --cal-text: inherit;
   --cal-muted: rgba(255, 222, 173, 0.55);
   --cal-hover-bg: rgba(255, 222, 173, 0.14);
