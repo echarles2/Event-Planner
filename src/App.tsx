@@ -1,7 +1,6 @@
-import React from "react";
 import "./App.css";
 import Header from './components/header/Header'
-import CalendarComponent from "./components/calendar-component/CalendarComponent";
+import CalendarComponent from "./components/calendar-component/calendar-component";
 import Footer from "./components/footer/Footer";
 
 export default function App() {
