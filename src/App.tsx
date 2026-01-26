@@ -11,8 +11,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Landing />}></Route>
-          <Route path="/calendar" element={<CalendarComponent />}></Route>
-          <Route path="/create-event" element={<CreateEvent />}></Route>
+          <Route path="calendar" element={<CalendarComponent />}></Route>
+          <Route path="create-event" element={<CreateEvent />}></Route>
         </Route>
       </Routes>
     </main>
