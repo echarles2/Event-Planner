@@ -1,3 +1,4 @@
+import "../../index.css";
 const eventExamples = [
     {
         id: 1, 
@@ -24,11 +25,12 @@ function CreateEvent(){
 
             {eventExamples.map((gathering) => (
                 <div key={gathering.id}>
-                    <p>{gathering.name}</p>
-                    <p>Date: {gathering.date}</p>
-                    <p>Time: {gathering.time}</p>
-                    <p>Location: {gathering.location}</p>
-                    <p>Details: {gathering.details}</p>
+                    <p><strong>{gathering.name}</strong></p>
+                    <p><strong>Date:</strong> {gathering.date}</p>
+                    <p><strong>Time:</strong> {gathering.time}</p>
+                    <p><strong>Location:</strong> {gathering.location}</p>
+                    <p><strong>Details:</strong> {gathering.details}</p>
+                    <br/>
                 </div>
             ))}
         </section>

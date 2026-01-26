@@ -1,14 +1,20 @@
 import "./App.css";
-import Header from './components/header/Header'
+import {Routes, Route} from "react-router-dom";
+import CreateEvent from "./components/create-event/CreateEvent";
 import CalendarComponent from "./components/calendar-component/calendar-component";
-import Footer from "./components/footer/Footer";
+import Landing from "./components/landing/Landing";
+import { Layout } from "./components/layout/Layout";
 
 export default function App() {
   return (
     <main>
-      <Header />
-      <CalendarComponent />
-      <Footer />
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Landing />}></Route>
+          <Route path="/calendar" element={<CalendarComponent />}></Route>
+          <Route path="/create-event" element={<CreateEvent />}></Route>
+        </Route>
+      </Routes>
     </main>
   );
 }
