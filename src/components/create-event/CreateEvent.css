@@ -1,0 +1,57 @@
+h2{
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 15px;
+}
+
+label{
+    display: block;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+input{
+    padding: 7px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.add-detail-button{
+    background-color: rgb(50, 237, 50);
+    padding: 8px;
+}
+
+.add-detail-button:hover{
+    border-color: rgb(12, 131, 12);
+    border-width: 2px;
+}
+
+.delete-detail-button{
+    background-color: red;
+    margin-left: 20px;
+    padding: 7px;
+}
+
+.delete-detail-button:hover{
+    border-color: rgb(138, 1, 1);
+    border-width: 2px;
+}
+
+.create-event-button{
+    background-color: #EFD287;
+    padding: 15px;
+    margin-top: 10px;
+    display: block;
+    margin: 0 auto;
+}
+
+.create-event-button:hover{
+    border-color: #be8d10;
+    border-width: 2px;
+}
+
+.error-message{
+    text-align: center;
+    color: red;
+}
