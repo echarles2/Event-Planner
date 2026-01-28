@@ -12,7 +12,7 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Landing />}></Route>
           <Route path="/calendar" element={<CalendarComponent />}></Route>
-          <Route path="/create-event" element={<CreateEvent />}></Route>
+          <Route path="/create-event" element={<CreateEvent onCreateEvent={(event) => console.log("Event created.")}/>}></Route>
         </Route>
       </Routes>
     </main>
