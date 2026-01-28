@@ -1,6 +1,11 @@
 import "./calendar-component.css";
 
-export default function CalendarComponent() {
+type CalendarProps = {
+  counter: number;
+  setCounter: React.Dispatch<React.SetStateAction<number>>;
+};
+
+export default function CalendarComponent(props: CalendarProps) {
   const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const days = Array.from({ length: 31 }, (_, i) => i + 1);
 
@@ -15,10 +20,20 @@ export default function CalendarComponent() {
     rows.push(days.slice(i, i + 7));
   }
 
+  function increment() {
+    props.setCounter((prev) => prev + 1);
+  }
+
   return (
     <section className="calendar-component">
       <header>
         <h2>January</h2>
+        <div className="shared-counter">
+          <span>Shared Counter: {props.counter}</span>
+          <button type="button" onClick={increment}>
+            Increment
+          </button>
+        </div>
       </header>
 
       <table>

@@ -18,10 +18,25 @@ const eventExamples = [
     }
 ];
 
-function CreateEvent(){
+type CreateEventProps = {
+  counter: number;
+  setCounter: React.Dispatch<React.SetStateAction<number>>;
+};
+
+function CreateEvent(props: CreateEventProps) {
+
+    function increment() {
+    props.setCounter((prev) => prev + 1);
+    }
     return(
         <section className="create-event">
             <h2>Create Your Event!</h2>
+            <div className="shared-counter">
+                    <span>Shared Counter: {props.counter}</span>
+                    <button type="button" onClick={increment}>
+                        Increment
+                    </button>
+                    </div>
 
             {eventExamples.map((gathering) => (
                 <div key={gathering.id}>
