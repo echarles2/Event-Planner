@@ -10,7 +10,7 @@ interface Event{
 }
 
 interface CreateEventProps{
-    onCreateEvent: (event: Event) => void;
+    onCreateEvent?: (event: Event) => void;
 }
 
 function CreateEvent({onCreateEvent}: CreateEventProps){
@@ -22,7 +22,7 @@ function CreateEvent({onCreateEvent}: CreateEventProps){
     const [error, setError] = useState('');
 
     function deleteDetail(index: number){
-            setDetails(details.filter((detail, i) => i !==index));
+            setDetails(details.filter((_, i) => i !==index));
     }
     
     function handleSubmit(e: React.FormEvent){
@@ -61,7 +61,7 @@ function CreateEvent({onCreateEvent}: CreateEventProps){
             details: details
         };
 
-        onCreateEvent(createdEvent);
+        onCreateEvent?.(createdEvent);
 
         setName("");
         setDate("");
