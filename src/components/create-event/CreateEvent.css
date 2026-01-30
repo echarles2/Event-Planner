@@ -55,3 +55,11 @@ input{
     text-align: center;
     color: red;
 }
+
+.shared-counter{
+    margin-top: 20px;
+    margin-bottom: 35px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}

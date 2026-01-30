@@ -15,7 +15,7 @@ interface CreateEventProps{
     onCreateEvent?: (event: Event) => void;
 }
 
-function CreateEvent(props: CreateEventProps){
+function CreateEvent({counter, setCounter, onCreateEvent}: CreateEventProps){
     const [name, setName] = useState('');
     const [date, setDate] = useState('');
     const [location, setLocation] = useState('');
@@ -24,7 +24,7 @@ function CreateEvent(props: CreateEventProps){
     const [error, setError] = useState('');
 
     function increment() {
-      props.setCounter((prev) => prev + 1);
+      setCounter((prev) => prev + 1);
     }
   
     function deleteDetail(index: number){
@@ -118,15 +118,15 @@ function CreateEvent(props: CreateEventProps){
             </ul>
 
             <br></br><p className="error-message">{error}</p>
-        
+
+            <button className="create-event-button" type="submit">Create Event</button><br></br>
+
             <div className="shared-counter">
-                    <span>Shared Counter: {props.counter}</span>
+                    <span>Shared Counter: {counter}</span>
                     <button type="button" onClick={increment}>
                         Increment
                     </button>
             </div>
-
-            <button className="create-event-button" type="submit">Create Event</button><br></br>
         </form>
     );
 }
