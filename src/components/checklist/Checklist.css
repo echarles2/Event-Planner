@@ -1,0 +1,12 @@
+.completed {
+  text-decoration: line-through;
+}
+
+.Todo {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
