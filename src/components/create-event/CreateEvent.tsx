@@ -10,10 +10,12 @@ interface Event{
 }
 
 interface CreateEventProps{
+    counter: number;
+    setCounter: React.Dispatch<React.SetStateAction<number>>;
     onCreateEvent?: (event: Event) => void;
 }
 
-function CreateEvent({onCreateEvent}: CreateEventProps){
+function CreateEvent(props: CreateEventProps){
     const [name, setName] = useState('');
     const [date, setDate] = useState('');
     const [location, setLocation] = useState('');
@@ -21,6 +23,10 @@ function CreateEvent({onCreateEvent}: CreateEventProps){
     const [details, setDetails] = useState<string[]>([]);
     const [error, setError] = useState('');
 
+    function increment() {
+      props.setCounter((prev) => prev + 1);
+    }
+  
     function deleteDetail(index: number){
             setDetails(details.filter((_, i) => i !==index));
     }
@@ -112,6 +118,13 @@ function CreateEvent({onCreateEvent}: CreateEventProps){
             </ul>
 
             <br></br><p className="error-message">{error}</p>
+        
+            <div className="shared-counter">
+                    <span>Shared Counter: {props.counter}</span>
+                    <button type="button" onClick={increment}>
+                        Increment
+                    </button>
+            </div>
 
             <button className="create-event-button" type="submit">Create Event</button><br></br>
         </form>
