@@ -1,7 +1,16 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
-function Todo({task, toggleComplete, deleteTodo}) {
+/**
+ * Interface for the task, toggleComplete, and deleteTodo props
+ */
+interface TodoProps {
+    task: { id: string; task: string; completed: boolean };
+    toggleComplete: (id: string) => void;
+    deleteTodo: (id: string) => void;
+}
+
+function Todo({ task, toggleComplete, deleteTodo }: TodoProps) {
     return (
         <div className='Todo'>
             <p onClick={() => toggleComplete(task.id)} 

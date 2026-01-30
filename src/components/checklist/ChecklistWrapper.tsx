@@ -1,5 +1,4 @@
 /* Parent component for the Checklist Form */
-
 import { useState } from 'react';
 import ChecklistForm from './ChecklistForm';
 import Todo from './Todo';

@@ -5,7 +5,6 @@ function ChecklistForm({ addTodo }: { addTodo: (item: string) => void }) {
     
     function handleSubmit(e: FormEvent) {
         e.preventDefault();
-
         addTodo(itemInput);
         setItemInput("")
     }
@@ -13,7 +12,7 @@ function ChecklistForm({ addTodo }: { addTodo: (item: string) => void }) {
     return (
         <div className="checklist-form">
             <h2>
-                Checklist for: 
+                Checklist: 
             </h2>
             <form onSubmit={handleSubmit}>
                 <input 
