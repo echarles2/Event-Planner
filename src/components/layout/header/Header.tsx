@@ -15,7 +15,7 @@ function Header() {
                         <NavLink to="/create-event">
                             Create Event
                         </NavLink>
-                        <NavLink to="/my-events">
+                        <NavLink to="/calendar">
                             My Events
                         </NavLink>
                     </div>
