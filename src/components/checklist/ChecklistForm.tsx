@@ -12,6 +12,11 @@ function ChecklistForm({ addTodo }: { addTodo: (item: string) => void }) {
             return;
         }
 
+        if (itemInput.trim().length > 30) {
+            setError("Item must have equals to or shorter than 30 characters");
+            return;
+        }
+
         addTodo(itemInput);
         setItemInput("")
         setError("");
