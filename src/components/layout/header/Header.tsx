@@ -21,7 +21,6 @@ function Header() {
                             My Checklist
                         </NavLink>
 
-                        <NavLink to="/my-events">
                         <NavLink to="/calendar">
                             My Events
                         </NavLink>
