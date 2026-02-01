@@ -1,3 +1,4 @@
+/* :root targets the html doc rootm, applying global css to the entire page*/
 :root {
   line-height: 1.5;
   font-weight: 400;
@@ -21,13 +22,22 @@ a:hover {
   color: #92D0ED;
 }
 
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: 'Funnel Display';
-  margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
-  min-height: 100vh;
+}
+
+/* The app container for structuring the Layout */
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 h1 {
