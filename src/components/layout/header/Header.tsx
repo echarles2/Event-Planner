@@ -22,6 +22,7 @@ function Header() {
                         </NavLink>
 
                         <NavLink to="/my-events">
+                        <NavLink to="/calendar">
                             My Events
                         </NavLink>
                     </div>
