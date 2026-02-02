@@ -12,10 +12,16 @@ function Header() {
                         <NavLink to="/" end>
                             Home
                         </NavLink>
+
                         <NavLink to="/create-event">
                             Create Event
                         </NavLink>
-                        <NavLink to="/my-events">
+
+                        <NavLink to="/my-checklist">
+                            My Checklist
+                        </NavLink>
+
+                        <NavLink to="/calendar">
                             My Events
                         </NavLink>
                     </div>

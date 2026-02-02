@@ -1,0 +1,53 @@
+.checklist-wrapper {
+  background-color: #92D0ED;
+  border-radius: 8px;
+  padding: 0.5rem;
+  overflow-y: auto;
+}
+
+.completed {
+  text-decoration: line-through;
+}
+
+.Todo {
+  background-color: #b1dff5;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  border-radius: 8px;
+  margin: 0.2rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.Todo p {
+  overflow-wrap: break-word;
+  flex: 1;
+  margin: 0.5rem 0.5rem 0.5rem 0;
+  min-width: 0;
+}
+
+input[type="text"]{
+  border-radius: 8px;
+  border: 1px solid transparent;
+}
+
+input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 7px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+.error-message{
+    text-align: center;
+    color: red;
+}
+
+.checklist-form form {
+  display: flex;
+}
