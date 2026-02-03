@@ -7,8 +7,19 @@ import Landing from "./components/landing/Landing";
 import { Layout } from "./components/layout/Layout";
 import { useState } from "react";
 
+type AvailabilityStatus = "available" | "unavailable";
+
+type AvailabilityEntry = {
+  day: number;
+  status: AvailabilityStatus;
+};
+
+
 export default function App() {
   var [counter, setCounter] = useState(0);
+
+  const [availability, setAvailability] = useState<AvailabilityEntry[]>([]);
+
   return (
     <main>
       <Routes>
@@ -16,7 +27,7 @@ export default function App() {
           <Route index element={<Landing counter={counter} setCounter={setCounter} />}></Route>
           <Route path="/create-event" element={<CreateEvent counter={counter} setCounter={setCounter} onCreateEvent={_event => console.log("Event created.")}/>}></Route>
           <Route path="/my-checklist" element={<ChecklistWrapper />}></Route>
-          <Route path="/calendar" element={<CalendarComponent counter={counter} setCounter={setCounter} />}></Route>
+          <Route path="/calendar" element={<CalendarComponent counter={counter} setCounter={setCounter} availability={availability} setAvailability={setAvailability} />}></Route>
         </Route>
       </Routes>
     </main>
