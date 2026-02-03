@@ -1,0 +1,17 @@
+h1 {
+    margin-bottom: 0%;
+}
+
+h3 {
+    margin-top: 0%;
+}
+
+.page-links {
+    display: flex;
+    gap: 5rem;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+}
