@@ -25,3 +25,23 @@ I.1: Header Component- Lalaine
 I.1: Create Event Component- Julia  
 I.1: Calendar Component- Ethan  
 I.1: Footer Component- Julia  
+
+## Sprint 2
+T.1 : Multi-page Navigation - Julia
+T.2: Navigation Interface(s) - Lalaine
+T.3: Shared state across pages - Ethan
+
+I.1: Feature Page 
+My Checklist Feature Page - Lalaine
+Create Event Feature Page - Julia
+My Events Feature Page - Ethan
+
+I.2: Form Component
+Checklist Form - Lalaine
+Create Event Form - Julia
+Availability Form - Ethan
+
+I.3: Element Addition/Removal 
+Add/Remove Checklist Item - Lalaine
+Add/Remove Event - Julia
+Add/Remove Availability - Ethan
