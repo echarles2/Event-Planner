@@ -1,10 +1,21 @@
+/**
+ * Create Event Component
+ * 
+ * This component uses the useFormInput hook which handles the state, validation, and error messages.
+ * The addEvent service function validates user input and calls the createEvent repository to store event data.
+ * This structure helps separate logic from the create event component, making it easier to update and maintain code.
+ */
+
 import "../../index.css";
 import "./CreateEvent.css";
 import { useState } from "react";
+import { useFormInput } from "../../hooks/useFormHook";
+import { addEvent } from "../services/createEventService";
 
-interface Event{
+export interface Event{
+    id: number;
     name: string;
-    date?: string;
+    date: string;
     location?: string;
     details?: string[];
 }
@@ -16,12 +27,12 @@ interface CreateEventProps{
 }
 
 function CreateEvent({counter, setCounter, onCreateEvent}: CreateEventProps){
-    const [name, setName] = useState('');
-    const [date, setDate] = useState('');
-    const [location, setLocation] = useState('');
-    const [detailInput, setDetailInput] = useState('');
+    const name = useFormInput();
+    const date = useFormInput();
+    const location = useFormInput();
+    const detailInput = useFormInput();
     const [details, setDetails] = useState<string[]>([]);
-    const [error, setError] = useState('');
+    const [formError, setFormError] = useState<string>("");
 
     function increment() {
       setCounter((prev) => prev + 1);
@@ -34,92 +45,100 @@ function CreateEvent({counter, setCounter, onCreateEvent}: CreateEventProps){
     function handleSubmit(e: React.FormEvent){
         e.preventDefault();
 
-        if (name.trim().length < 3){
-            setError("Event name must be at least 3 letters.");
-            return;
-        }
-        if (name.trim().length > 30){
-            setError("Event name must be less than 30 characters.");
-            return;
-        }
-        if (date && isNaN(Date.parse(date))){
-            setError("Enter a valid date.");
-            return;
-        }
-        if (date){
-            const dateInput = new Date(date);
-            const dateToday = new Date();
-            dateToday.setHours(0, 0, 0, 0);
-            if (dateInput < dateToday){
-                setError("Date cannot be in the past.");
-                return;
-            }
-        }
-        if (location.trim().length > 50){
-            setError("Location must be less than 50 characters.");
+        name.setError("");
+        date.setError("");
+        location.setError("");
+        setFormError("");
+
+        const validName = name.validate(value =>
+            value.trim().length < 3 ? "Event name must be at least 3 letters." :
+            value.trim().length > 30 ? "Event name must be less than 30 characters." : null
+        );
+
+        const validDate = date.validate(value =>
+            !value || isNaN(Date.parse(value)) ? "Please enter a valid date." : null
+        );
+
+        if (!validName || ! validDate){
             return;
         }
 
-        const createdEvent: Event = {
-            name: name,
-            date: date || undefined,
-            location: location || undefined,
-            details: details
-        };
+        const createdEvent = addEvent({
+            name: name.value,
+            date: date.value,
+            location: location.value || undefined,
+            details
+        });
 
-        onCreateEvent?.(createdEvent);
+        if (!createdEvent.success){
+            setFormError(createdEvent.error || "Error has occurred.");
+            return;
+        }
 
-        setName("");
-        setDate("");
-        setLocation("");
+        onCreateEvent?.({
+            id: Date.now(),
+            name: name.value,
+            date: date.value,
+            location: location.value || undefined,
+            details
+        });
+
+        name.setValue("");
+        date.setValue("");
+        location.setValue("");
+        detailInput.setValue("");
         setDetails([]);
-        setDetailInput("");
-        setError("");
+
+        alert(`${name.value} has been successfully created!`);
     }
     return(
         <form onSubmit={handleSubmit}>
-            <h2>Create Your Event!</h2>
-            <label>
-                <strong>Event Name:</strong><br></br>
-                <input value={name} onChange={e => setName(e.target.value)} />
-            </label>
-            <label>
-                <strong>Date:</strong><br></br>
-                <input type="date" value={date} onChange={e => setDate(e.target.value)} />
-            </label>
-            <label>
-                <strong>Location:</strong><br></br>
-                <input value={location} onChange={e => setLocation(e.target.value)} />
-            </label>
-            
-            <label>
-                <strong>Event Details:</strong><br></br>
-                <input value={detailInput} onChange={e => setDetailInput(e.target.value)} />
-            </label>
+            <div className="create-event-form">
+                <h2>Create Your Event!</h2>
+                <label>
+                    <strong>Event Name:</strong><br></br>
+                    <input value={name.value} onChange={name.onChange} />
+                    {name.error && <p className="error-message">{name.error}</p>}
+                </label>
+                <label>
+                    <strong>Date:</strong><br></br>
+                    <input type="date" value={date.value} onChange={date.onChange} />
+                    {date.error && <p className="error-message">{date.error}</p>}
+                </label>
+                <label>
+                    <strong>Location:</strong><br></br>
+                    <input value={location.value} onChange={location.onChange} />
+                </label>
+                
+                <label>
+                    <strong>Event Details:</strong><br></br>
+                    <input value={detailInput.value} onChange={detailInput.onChange} />
+                </label>
 
-            <button className="add-detail-button" type="button" onClick={() => {
-                if (detailInput.trim() === ""){
-                    return;
-                }
-                setDetails([...details, detailInput]);
-                setDetailInput("");
-                }}
-                >Add Detail
-            </button>
+                <button className="add-detail-button" type="button" onClick={() => {
+                    if (detailInput.value.trim() === ""){
+                        return;
+                    }
+                    setDetails([...details, detailInput.value]);
+                    detailInput.setValue("");
+                    }}
+                    >Add Detail
+                </button>
 
-            <ul>
-                {details.map((detail, index) => (
-                    <li key={index}>{detail}<button className="delete-detail-button" type="button" onClick={() => 
-                        deleteDetail(index)}>
-                        Delete
-                        </button>
-                    </li>
-                ))}
-            </ul>
+                <ul>
+                    {details.map((detail, index) => (
+                        <li key={index}>{detail}<button className="delete-detail-button" type="button" onClick={() => 
+                            deleteDetail(index)}>
+                            Delete
+                            </button>
+                        </li>
+                    ))}
+                </ul>
 
-            <br></br><p className="error-message">{error}</p>
+                <br></br>{formError && <p className="error-message">{formError}</p>}
 
-            <button className="create-event-button" type="submit">Create Event</button><br></br>
+                <button className="create-event-button" type="submit">Create Event</button><br></br>
+            </div>
 
             <div className="shared-counter">
                     <span>Shared Counter: {counter}</span>
