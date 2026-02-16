@@ -1,81 +1,101 @@
-
+/* =========================
+   Calendar Page Base
+   ========================= */
 
 .calendar-component {
-  --cal-border: navajowhite;
-  --cal-bg: transparent;
-  --cal-header-bg: rgba(255, 222, 173, 0.08);
-  --cal-text: inherit;
-  --cal-muted: rgba(255, 222, 173, 0.55);
-  --cal-hover-bg: rgba(255, 222, 173, 0.14);
-  --cal-focus: navajowhite;
-  --cal-cell-size: 5rem;
+  background-color: #ECEBEB;
+  padding: 24px;
+  border-radius: 12px;
+  color: #1F2C33;
+}
+
+.shared-counter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.shared-counter button {
+  background-color: #92D0ED;
+  color: #1F2C33;
+}
+.availability-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-start;
+  background-color: #FFFFFF;
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid #1F2C33;
+}
+.availability-form select {
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #1F2C33;
+  background-color: #ECEBEB;
+  color: #1F2C33;
+}
+
+.availability-form button {
+  background-color: #92D0ED;
+  color: #1F2C33;
+  cursor: pointer;
+}
+
+
+.availability-list {
+  background-color: #FFFFFF;
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid #1F2C33;
+}
+
+.availability-list ul {
+  padding: 0;
+  margin: 0;
+}
+
+.availability-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ECEBEB;
+}
+
+.availability-list button {
+  background-color: #EF85A3;
 }
 
 .calendar-component table {
-  border-spacing: 0;
-  background: var(--cal-bg);
-  color: var(--cal-text);
-}
-
-.calendar-component th,
-.calendar-component td {
-  border: 1px solid var(--cal-border);
-  padding: 0;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 24px;
 }
 
 .calendar-component th {
-  background: var(--cal-header-bg);
-  font-weight: 600;
-  text-align: left;
-  vertical-align: top;
-  padding: 0.4rem;
-  width: var(--cal-cell-size);
+  background-color: #92D0ED;
+  color: #1F2C33;
+  padding: 8px;
+  border: 1px solid #1F2C33;
 }
 
 .calendar-component td {
-  width: var(--cal-cell-size);
-  height: var(--cal-cell-size);
+  border: 1px solid #1F2C33;
+  vertical-align: top;
+  width: 90px;
+  height: 120px;
 }
 
-.calendar-component td > button {
-  width: 100%;
-  height: 100%;
-  border: 0;
-  border-radius: 0px;
-  background: transparent;
-  padding: 0.45rem;
-  display: grid;
-  grid-template-rows: auto 1fr;
-  align-content: start;
-  justify-items: start;
+.calendar-component td button {
+  background-color: #1F2C33;
+  padding: 10px;
 }
-
-.calendar-component td > button:hover {
-  background: var(--cal-hover-bg);
-}
-
-.calendar-component .day-number {
-  font-size: 0.95rem;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.calendar-component .day-events {
-  list-style: none;
-  margin: 0.35rem 0 0;
-  padding: 0;
-  font-size: 0.72rem;
-  line-height: 1.2;
-  display: grid;
-  gap: 0.2rem;
-}
-
-.calendar-component .day-events li {
-  max-width: 100%;
-  padding: 0.15rem 0.35rem;
-  border: 1px solid var(--cal-border);
-  border-radius: 5px;
-  background: rgba(255, 222, 173, 0.06);
-  color: var(--cal-text);
-
+.day-tag{
+display: flex;
+ flex-direction: column;
+ align-items: center;
+font-size: 0.8rem;
+ padding: 0%;
+ margin: 0%;
 }
