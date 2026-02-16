@@ -30,13 +30,14 @@ input{
 .add-detail-button{
     background-color: #6EB668;
     padding: 8px;
+    margin-bottom: 0.8rem;
 }
 
 .delete-detail-button{
-    background-color: #92D0ED;
+    background-color: #EF85A3;
     border-radius: 8px;
-    margin-left: 20px;
-    padding: 7px;
+    padding: 5px;
+    margin-right: 0.5rem;
 }
 
 .create-event-button{
@@ -64,4 +65,21 @@ input{
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.detail-list{
+    list-style: none;
+    padding-left: 0.5rem;    
+}
+
+.detail-item{
+    margin-top: 0.3rem;
+    background-color: #b1dff5;
+    border-radius: 8px;
+    padding-left: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
 }
