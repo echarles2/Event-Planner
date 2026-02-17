@@ -1,6 +1,8 @@
 import { useState, type FormEvent } from "react";
+import { useCounter } from "../../state/CounterContext";
 
 function ChecklistForm({ addTodo }: { addTodo: (item: string) => void }) {
+    const { counter, increment } = useCounter();
     const [itemInput, setItemInput] = useState("");
     const [error, setError] = useState("");
     
@@ -37,6 +39,8 @@ function ChecklistForm({ addTodo }: { addTodo: (item: string) => void }) {
                 <button type="submit" className="todo-btn">Add</button>
                 <p className="error-message">{error}</p>
             </form>
+          <span>Shared Counter: {counter}</span>
+          <button type="button" onClick={increment}>Increment</button>
         </div>
     )
 }
