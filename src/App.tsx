@@ -6,7 +6,7 @@ import CalendarComponent from "./components/calendar-component/calendar-componen
 import Landing from "./components/landing/Landing";
 import { Layout } from "./components/layout/Layout";
 import { CounterProvider } from "./state/CounterContext";
-import React, { useState } from "react";
+import { useState } from "react";
 
 type AvailabilityStatus = "available" | "unavailable";
 
