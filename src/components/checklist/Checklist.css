@@ -11,10 +11,6 @@
 
 .Todo {
   background-color: #b1dff5;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-  border-radius: 8px;
-  margin: 0.2rem;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -44,8 +40,51 @@ input {
 }
 
 .error-message{
-    text-align: center;
-    color: red;
+  text-align: center;
+  color: red;
+}
+
+/* Checklist Section for an Event group*/
+
+.checklist-section {
+  background-color: #b1dff5;
+  border-radius: 8px;
+  padding: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.checklist-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.checklist-section-header h3 {
+  margin: 0;
+}
+
+.delete-checklist-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: red;
+  padding: 0.2rem 0.5rem;
+}
+
+.delete-checklist-btn:hover {
+  color: rgb(136, 0, 0);
+}
+
+.checklist-section-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.checklist-section-form input {
+  flex: 1;
+  margin: 0;
 }
 
 .checklist-form form {

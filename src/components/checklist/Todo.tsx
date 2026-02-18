@@ -17,10 +17,9 @@ function Todo({ task, toggleComplete, deleteTodo }: TodoProps) {
                 className={`${task.completed ? 'completed' : ""}`}>
                 {task.task}
             </p>
-            <div>
+            <div className="delete-checklist-btn">
                 <FontAwesomeIcon icon={faXmark} 
                 onClick={() => deleteTodo(task.id)}
-                style={{color: "#efd287"}} 
                 />
             </div>
         </div>
