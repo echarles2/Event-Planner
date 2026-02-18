@@ -1,15 +1,9 @@
+import { useCounter } from "../../state/CounterContext";
 import "./Landing.css";
 
-type LandingProps = {
-  counter: number;
-  setCounter: React.Dispatch<React.SetStateAction<number>>;
-};
 
-function Landing(props: LandingProps) {
-
-  function increment() {
-    props.setCounter((prev) => prev + 1);
-  }
+function Landing() {
+const { counter, increment } = useCounter();
 
     return(
         <section className="landing">
@@ -20,8 +14,12 @@ function Landing(props: LandingProps) {
             </div>
             <p>Get started managing events by choosing a page from the navigation bar.</p>
 
-            <p>Shared counter: {props.counter}</p>
-            <button type="button" onClick={increment}>Increment</button>
+            <div className="shared-counter">
+                <span>Shared Counter: {counter}</span>
+                <button type="button" onClick={increment}>
+                Increment
+                </button>
+            </div>
         </section>
     );
 }

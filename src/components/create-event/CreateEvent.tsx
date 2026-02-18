@@ -11,6 +11,7 @@ import "./CreateEvent.css";
 import { useState } from "react";
 import { useFormInput } from "../../hooks/useFormHook";
 import { addEvent } from "../services/createEventService";
+import { useCounter } from "../../state/CounterContext";
 
 export interface Event{
     id: number;
@@ -21,22 +22,17 @@ export interface Event{
 }
 
 interface CreateEventProps{
-    counter: number;
-    setCounter: React.Dispatch<React.SetStateAction<number>>;
     onCreateEvent?: (event: Event) => void;
 }
 
-function CreateEvent({counter, setCounter, onCreateEvent}: CreateEventProps){
+function CreateEvent({onCreateEvent}: CreateEventProps){
+    const { counter, increment } = useCounter();
     const name = useFormInput();
     const date = useFormInput();
     const location = useFormInput();
     const detailInput = useFormInput();
     const [details, setDetails] = useState<string[]>([]);
     const [formError, setFormError] = useState<string>("");
-
-    function increment() {
-      setCounter((prev) => prev + 1);
-    }
   
     function deleteDetail(index: number){
             setDetails(details.filter((_, i) => i !==index));
@@ -141,10 +137,10 @@ function CreateEvent({counter, setCounter, onCreateEvent}: CreateEventProps){
             </div>
 
             <div className="shared-counter">
-                    <span>Shared Counter: {counter}</span>
-                    <button type="button" onClick={increment}>
-                        Increment
-                    </button>
+                <span>Shared Counter: {counter}</span>
+                <button type="button" onClick={increment}>
+                Increment
+                </button>
             </div>
         </form>
     );
