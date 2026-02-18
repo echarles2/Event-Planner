@@ -125,9 +125,9 @@ function CreateEvent({counter, setCounter, onCreateEvent}: CreateEventProps){
                     >Add Detail
                 </button>
 
-                <ul>
+                <ul className="detail-list">
                     {details.map((detail, index) => (
-                        <li key={index}>{detail}<button className="delete-detail-button" type="button" onClick={() => 
+                        <li key={index} className="detail-item"><span className="detail-content">{detail}</span><button className="delete-detail-button" type="button" onClick={() => 
                             deleteDetail(index)}>
                             Delete
                             </button>
