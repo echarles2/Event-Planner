@@ -7,6 +7,8 @@ import { groupChecklistsByEvent } from "../services/checklistService";
 import * as EventsRepo from "../../apis/createEventRepo";
 import './Checklist.css';
 import { v4 as uuidv4 } from 'uuid';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faClipboardList } from '@fortawesome/free-solid-svg-icons'
 
 function ChecklistWrapper() {
     const [checklists, setChecklists] = useState<Checklist[]>([]);
@@ -57,31 +59,45 @@ function ChecklistWrapper() {
         setChecklists(prev => prev.filter(c => c.id !== id));
     }
 
-    // Delete an entire checklist group (all items for that group will be deleted)
-    function handleDeleteChecklist(groupKey: string) {
+    // Removes all to-do items for that Event/Personal (to wipe that entire checklist section)
+    function handleDeleteChecklist(eventKey: string) {
         setChecklists(prev =>
-            prev.filter(c => (c.eventId ?? "personal") !== groupKey)
+            prev.filter(item => eventKey === "personal" 
+                ? item.eventId : item.eventId !== eventKey
+            )
+                //(item.eventId ?? "personal") !== eventKey)
         );
     }
-
+    // Turns the grouped data (event name & its to-do items) into rendable structure
+    const entries = Array.from(grouped.entries());
+   
     return (
         <div className="checklist-wrapper">
+                <h2>
+                    <FontAwesomeIcon icon={faClipboardList} />
+                    Checklist
+                </h2>
             <ChecklistForm
                 checklists={checklists}
                 onAddChecklist={handleAddChecklist}
             />
+            
+            {entries.map(entry => {
+                const eventKey = entry[0];
+                const items = entry[1];
 
-            {Array.from(grouped.entries()).map(([key, items]) => (
-                <ChecklistSection
-                    key={key}
-                    eventName={getEventName(key)}
-                    items={items}
-                    onAddItem={(item) => handleAddItem(key, item)}
-                    onToggleItem={handleToggleItem}
-                    onDeleteItem={handleDeleteItem}
-                    onDeleteChecklist={() => handleDeleteChecklist(key)}
-                />
-            ))}
+                return (
+                    <ChecklistSection
+                        key={eventKey}
+                        eventName={getEventName(eventKey)}
+                        items={items}
+                        onAddItem={(item) => handleAddItem(eventKey, item)}
+                        onToggleItem={handleToggleItem}
+                        onDeleteItem={handleDeleteItem}
+                        onDeleteChecklist={() => handleDeleteChecklist(eventKey)}
+                    />
+                )
+            })}
         </div>
     );
 }

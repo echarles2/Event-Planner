@@ -21,7 +21,17 @@ export function ChecklistForm({
     const eventIdInput = useFormInput();
     const events: Event[] = EventsRepo.fetchEvents();
 
-    // Filters out events that already have a checklist
+    /**
+     * Filters out events that already have a checklist
+     * usedEventIds collects all eventId that already appear in the Checklists[] 
+     * and creates a new set out of that.
+     * 
+     * availableEvents filters the entire event list to only show the events NOT 
+     * in that set (aka, events w/ no designated checklist yet)
+     * 
+     * hasPersonalChecklist checks if a Personal (no eventID) checklist exist already
+     * then will hide the "Personal" option from the dropdown if yes.
+     */
     const usedEventIds = new Set(
         checklists.filter(c => c.eventId).map(c => c.eventId)
     );
@@ -61,7 +71,6 @@ export function ChecklistForm({
 
     return (
         <div className="checklist-form">
-            <h2>Checklist</h2>
             <form onSubmit={handleSubmit}>
                 <label>Event:</label>
                 <select 

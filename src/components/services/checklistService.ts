@@ -10,6 +10,12 @@ export function fetchChecklist() {
     return checklist;
 }
 
+/**
+ * Ensures that there's no duplicate Event/Personal checklist group
+ * @param eventId - The Event that is attached to the checklist 
+ * @param existingChecklists - Checks if a checklist already exists for that event
+ * @returns - whether it's valid or not & its error message
+ */
 export function checklistEventValidation(
     eventId: string | undefined,
     existingChecklists: Checklist[]
@@ -66,6 +72,7 @@ export function groupChecklistsByEvent(
 /**
  * Validation for the addition of to-do items
  * @param item - a to-do item to be added in a checklist
+ * @returns - whether it's valid or not & its error message
  */
 export function checklistItemValidation(
     item: string

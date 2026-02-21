@@ -4,8 +4,11 @@ import { checklistItemValidation } from "../services/checklistService";
 import type { Checklist } from "../../types/resources";
 import Todo from "./Todo";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faXmark, faPlus } from '@fortawesome/free-solid-svg-icons'
 
+/**
+ * Interface for the checklist group, toggle & delete Checklist & Item props
+ */
 interface ChecklistSectionProps {
     eventName: string;
     items: Checklist[];
@@ -16,7 +19,7 @@ interface ChecklistSectionProps {
 }
 
 /**
- * A dedicated section for a single checklist group (one event or Personal).
+ * A dedicated section to render the checklist groupings (Event or Personal).
  * Uses the useFormInput hook and checklistItemValidation service.
  */
 export function ChecklistSection({
@@ -71,7 +74,9 @@ export function ChecklistSection({
                     onChange={itemInput.onChange}
                     placeholder="Add another item..."
                 />
-                <button type="submit" className="todo-btn">+</button>
+                <button type="submit" className="todo-btn">
+                    <FontAwesomeIcon icon={faPlus} />
+                </button>
             </form>
             {itemInput.error && (
                 <p className="error-message">{itemInput.error}</p>

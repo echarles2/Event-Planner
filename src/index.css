@@ -2,11 +2,8 @@
 :root {
   line-height: 1.5;
   font-weight: 400;
-
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
+  background-color: #FDF8ED;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -15,7 +12,7 @@
 
 a {
   font-weight: 500;
-  color: #92D0ED;
+  color: #0E4258;
   text-decoration: inherit;
 }
 a:hover {
@@ -45,6 +42,9 @@ h1 {
   color: #EF85A3;
   font-size: 3.2em;
   line-height: 1.1;
+}
+p {
+  color: #0E4258;
 }
 
 button {
