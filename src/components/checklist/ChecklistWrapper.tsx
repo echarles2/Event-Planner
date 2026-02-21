@@ -1,4 +1,3 @@
-/* Parent component for the Checklist page */
 import { useState } from 'react';
 import { ChecklistForm } from './ChecklistForm';
 import { ChecklistSection } from './ChecklistSection';
@@ -10,6 +9,14 @@ import { v4 as uuidv4 } from 'uuid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClipboardList } from '@fortawesome/free-solid-svg-icons'
 
+/**
+ * Serves as the parent component for the Checklist feature, managing the 
+ * checklist state and handling user interaction (add, toggle complete, delete).
+ * It retrieves event data using Events Repository (fetchEvents) and organizes 
+ * checklist items using groupChecklistsByEvent service. 
+ * This refactored component makes use of the layered architecture by coordinating
+ * repository, service, and component-level logic.
+ */
 function ChecklistWrapper() {
     const [checklists, setChecklists] = useState<Checklist[]>([]);
     const events = EventsRepo.fetchEvents();

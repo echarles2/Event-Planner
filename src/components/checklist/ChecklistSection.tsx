@@ -6,9 +6,7 @@ import Todo from "./Todo";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark, faPlus } from '@fortawesome/free-solid-svg-icons'
 
-/**
- * Interface for the checklist group, toggle & delete Checklist & Item props
- */
+//Props for the ChecklistSection component
 interface ChecklistSectionProps {
     eventName: string;
     items: Checklist[];
@@ -19,8 +17,16 @@ interface ChecklistSectionProps {
 }
 
 /**
- * A dedicated section to render the checklist groupings (Event or Personal).
- * Uses the useFormInput hook and checklistItemValidation service.
+ * Renders a checklist section for an event or personal list.
+ * Uses the useFormInput hook to manage the user input state & error messages.
+ * Uses the checklistItemValidation service to validate the to-do item input.
+ * @param props - eventName: Title of the checklist section (Event Name / Personal)
+ * @param props - items: To-do items to show
+ * @param props - onAddItem: Callback invoked with the new to-do item input
+ * @param props - onToggleItem - Callback invoked with an item id to toggle completion.
+ * @param props - onDeleteItem - Callback invoked with an item id to delete it.
+ * @param props - onDeleteChecklist - Callback invoked to delete the entire checklist.
+ * @returns - the rendered  checklist section.
  */
 export function ChecklistSection({
     eventName,

@@ -8,11 +8,19 @@ import type { Checklist } from "../../types/resources";
 import type { Event } from "../create-event/CreateEvent";
 import * as EventsRepo from "../../apis/createEventRepo";
 
+// Props for the ChecklistForm component
 interface ChecklistFormProps {
     checklists: Checklist[];
     onAddChecklist: (eventId: string | undefined, item: string) => void;
 }
-
+/**
+ * Renders a Checklist form to enable event selection & add to-do items.
+ * Uses "checklistItemValidation" service to validate the to-do item input. 
+ * Uses "checklistEventValidation" service to validate the selected event before calling "onAddChecklist".
+ * @param props- checklists: Existing checklist items used to filter available events.
+ * @param props - onAddChecklist: Callback function called with eventId & item when the form is submitted successfully.
+ * @returns - The rendered checklist form.
+ */
 export function ChecklistForm({
     checklists,
     onAddChecklist,
@@ -41,7 +49,7 @@ export function ChecklistForm({
     function handleSubmit(e: FormEvent) {
         e.preventDefault();
 
-        // use the checklistItemValidation service for validation
+        // use the checklistItemValidation service for item validation
         const itemValidation = checklistItemValidation(itemInput.value);
         if (!itemValidation.isValid) {
             itemInput.setError(itemValidation.errors[0]);
@@ -96,7 +104,7 @@ export function ChecklistForm({
                     placeholder="Add an item"
                 />
                 {itemInput.error && (
-                    <p className="error">{itemInput.error}</p>
+                    <p className="error-message">{itemInput.error}</p>
                 )}
                 <button type="submit" className="todo-btn">Add</button>
             </form>

@@ -3,7 +3,7 @@ import type { Checklist } from "../../types/resources";
 
 /**
  * Request to get all Checklist from the repository
- * @returns - An array of Checklists
+ * @returns - Checklists array
  */
 export function fetchChecklist() {
     const checklist = ChecklistRepo.fetchChecklists();
@@ -14,7 +14,7 @@ export function fetchChecklist() {
  * Ensures that there's no duplicate Event/Personal checklist group
  * @param eventId - The Event that is attached to the checklist 
  * @param existingChecklists - Checks if a checklist already exists for that event
- * @returns - whether it's valid or not & its error message
+ * @returns - whether it's valid or not (boolean) & its error message
  */
 export function checklistEventValidation(
     eventId: string | undefined,
@@ -52,7 +52,7 @@ export function checklistEventValidation(
  * Items with no eventId are grouped as "personal".
  * This will be reusable across components that need to display checklists by event.
  * @param checklists - An array of checklist items
- * @returns - a map where keys are eventId strings (or "personal") and values are arrays of items
+ * @returns - a map where keys are eventId (or "personal") and values are arrays of to-do items
  */
 export function groupChecklistsByEvent(
     checklists: Checklist[]
@@ -72,7 +72,7 @@ export function groupChecklistsByEvent(
 /**
  * Validation for the addition of to-do items
  * @param item - a to-do item to be added in a checklist
- * @returns - whether it's valid or not & its error message
+ * @returns - whether it's valid or not (boolean) & its error message
  */
 export function checklistItemValidation(
     item: string
