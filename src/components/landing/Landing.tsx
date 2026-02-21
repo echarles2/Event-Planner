@@ -1,15 +1,9 @@
+import { useCounter } from "../../state/CounterContext";
 import "./Landing.css";
 
-type LandingProps = {
-  counter: number;
-  setCounter: React.Dispatch<React.SetStateAction<number>>;
-};
 
-function Landing(props: LandingProps) {
-
-  function increment() {
-    props.setCounter((prev) => prev + 1);
-  }
+function Landing() {
+const { counter, increment } = useCounter();
 
     return(
         <section className="landing">

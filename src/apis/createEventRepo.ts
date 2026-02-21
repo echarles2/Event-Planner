@@ -9,7 +9,7 @@ export function getEventById(eventId: number): Event{
     const foundEvent = eventTestData.find(e => e.id === eventId);
 
     if(!foundEvent) {
-        throw new Error("Failed to fetch event with ${eventId}");
+        throw new Error(`Failed to fetch event with ${eventId}`);
     }
 
     return foundEvent;
