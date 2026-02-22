@@ -11,10 +11,6 @@
 
 .Todo {
   background-color: #b1dff5;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-  border-radius: 8px;
-  margin: 0.2rem;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -30,6 +26,22 @@
   min-width: 0;
 }
 
+.todo-btn {
+  background-color: #6EB668;
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 10px;
+  display: block;
+  margin: 0 auto;
+}
+
+.todo-btn:hover{
+  border-color: #437c3e;
+  border-width: 2px;
+}
+
+
+
 input[type="text"]{
   border-radius: 8px;
   border: 1px solid transparent;
@@ -44,8 +56,50 @@ input {
 }
 
 .error-message{
-    text-align: center;
-    color: red;
+  text-align: center;
+  color: red;
+}
+
+/* Checklist Section for event grouping*/
+.checklist-section {
+  background-color: #b1dff5;
+  border-radius: 8px;
+  padding: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.checklist-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.checklist-section-header h3 {
+  margin: 0;
+}
+
+.delete-checklist-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: red;
+  padding: 0.2rem 0.5rem;
+}
+
+.delete-checklist-btn:hover {
+  color: rgb(136, 0, 0);
+}
+
+.checklist-section-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.checklist-section-form input {
+  flex: 1;
+  margin: 0;
 }
 
 .checklist-form form {
