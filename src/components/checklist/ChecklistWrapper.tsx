@@ -8,6 +8,7 @@ import './Checklist.css';
 import { v4 as uuidv4 } from 'uuid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClipboardList } from '@fortawesome/free-solid-svg-icons'
+import { useCounter } from "../../state/CounterContext";
 
 /**
  * Serves as the parent component for the Checklist feature, managing the 
@@ -20,6 +21,7 @@ import { faClipboardList } from '@fortawesome/free-solid-svg-icons'
 function ChecklistWrapper() {
     const [checklists, setChecklists] = useState<Checklist[]>([]);
     const events = EventsRepo.fetchEvents();
+    const { counter, increment } = useCounter();
 
     // Group checklists by event using the service
     const grouped = groupChecklistsByEvent(checklists);
@@ -105,6 +107,10 @@ function ChecklistWrapper() {
                     />
                 )
             })}
+            <div className="shared-counter">
+                <span>Shared Counter: {counter}</span>
+                <button type="button" onClick={increment}>Increment</button>
+            </div>
         </div>
     );
 }

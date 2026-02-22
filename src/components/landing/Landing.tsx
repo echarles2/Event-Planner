@@ -13,7 +13,7 @@ const { counter, increment } = useCounter();
                 send invites, make a checklist, and view your friends' avalibilities through shared calendars.</p>
                 <p>Get started now by choosing a page from the navigation bar above!</p>
             </div>
-            <p>Shared counter: {props.counter}</p>
+            <p>Shared counter: {counter}</p>
             <button type="button" onClick={increment}>Increment</button>
         </section>
     );

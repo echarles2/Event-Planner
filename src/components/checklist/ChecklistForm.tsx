@@ -108,8 +108,6 @@ export function ChecklistForm({
                 )}
                 <button type="submit" className="todo-btn">Add</button>
             </form>
-          <span>Shared Counter: {counter}</span>
-          <button type="button" onClick={increment}>Increment</button>
         </div>
     )
 }
