@@ -6,18 +6,9 @@ import CalendarComponent from "./components/calendar-component/calendar-componen
 import Landing from "./components/landing/Landing";
 import { Layout } from "./components/layout/Layout";
 import { CounterProvider } from "./state/CounterContext";
-import { useState } from "react";
-
-type AvailabilityStatus = "available" | "unavailable";
-
-type AvailabilityEntry = {
-  day: number;
-  status: AvailabilityStatus;
-};
 
 
 export default function App() {
-  const [availability, setAvailability] = useState<AvailabilityEntry[]>([]);
 
   return (
     <main>
@@ -27,7 +18,7 @@ export default function App() {
           <Route index element={<Landing />}></Route>
           <Route path="/create-event" element={<CreateEvent onCreateEvent={_event => console.log("Event created.")}/>}></Route>
           <Route path="/my-checklist" element={<ChecklistWrapper />}></Route>
-          <Route path="/calendar" element={<CalendarComponent availability={availability} setAvailability={setAvailability} />}></Route>
+          <Route path="/calendar" element={<CalendarComponent />}></Route>
         </Route>
       </Routes>
       </CounterProvider>
