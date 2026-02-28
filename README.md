@@ -45,3 +45,28 @@ I.3: Element Addition/Removal
 Add/Remove Checklist Item - Lalaine  
 Add/Remove Event - Julia  
 Add/Remove Availability - Ethan  
+
+## Sprint 3
+T.1: Hook Definition(s) - Julia  
+T.2: Service Definition(s) - Lalaine  
+T.4: Shared-page-state Refactor - Ethan  
+
+I.1: Repository Definition(s) and Integration  
+My Checklist Repository - Lalaine  
+Create Event Repository - Julia  
+Availability Repository - Ethan  
+
+I.2: Test Data  
+Checklist Data - Lalaine  
+Event Data - Julia  
+Availability Data - Ethan  
+
+I.3: New / Refactored Component(s) 
+My Checklist Refactor - Lalaine  
+Create Event Refactor - Julia  
+Calendar Refactor - Ethan    
+
+I.4: Architectural Layout Document
+My Checklist Architecture Documentation - Lalaine  
+Create Event Architecture Documentation - Julia  
+Availability/Calendar Architecture Documentation - Ethan 

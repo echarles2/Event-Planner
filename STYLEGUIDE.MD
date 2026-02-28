@@ -1,10 +1,10 @@
 ## Colour Palette
 The colour palette throughout the event management application will include:
 - <span style="color:#92D0ED;">#92D0ED: Icons, interactive elements</span>
-- <span style="color:#EFD287;">#EFD287: Confirmation buttons, success messages</span>
+- <span style="color:#6EB668;">#6EB668: Confirmation buttons, success messages</span>
 - <span style="color:#EF85A3;">#EF85A3: Headers</span>
-- <span style="color:#FFFFFF;">#FFFFFF: Background</span>
-- <span style="color:#000000;">#000000: Text</span>
+- <span style="color:#FDF8ED;">#FDF8ED: Background</span>
+- <span style="color:#0E4258;">#0E4258: Text</span>
 
 ## Fonts
 **Funnel Display:** General text and content  
