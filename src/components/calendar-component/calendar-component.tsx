@@ -1,21 +1,51 @@
+/**
+ * I.3 Architecture Usage:
+ * - useFormInput(): manages the Day field's value and validation message.
+ * - AvailabilityService: validates the submitted day/status.
+ * - AvailabilityRepository: provides CRUD-style persistence using test data.
+ *
+ */
 import "./calendar-component.css";
-import React, {useMemo, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import { useCounter } from "../../state/CounterContext";
+import type { AvailabilityEntry, AvailabilityStatus } from "../../types/availability";
+import { AvailabilityRepository } from "../../apis/availabilityRepo";
+import { useFormInput } from "../../hooks/useFormHook";
+import { AvailabilityService } from "../services/availabilityService";
 
-type AvailabilityStatus = "available" | "unavailable";
-
-type AvailabilityEntry = {
-  day: number;
-  status: AvailabilityStatus;
-};
-
-type CalendarProps = {
-  availability: AvailabilityEntry[];
-  setAvailability: React.Dispatch<React.SetStateAction<AvailabilityEntry[]>>;
-};
-
-export default function CalendarComponent(props: CalendarProps) {
+export default function CalendarComponent() {
   const { counter, increment } = useCounter();
+
+  const repo = useMemo(() => new AvailabilityRepository(), []);
+  const service = useMemo(() => new AvailabilityService(repo), [repo]);
+  const [availability, setAvailability] = useState<AvailabilityEntry[]>([]);
+  const dayInput = useFormInput();
+
+  useEffect(() => {
+    async function load() {
+      const data = await repo.getAll();
+      setAvailability(data);
+    }
+    load();
+  }, [repo]);
+
+  async function handleSave(day: number, status: AvailabilityStatus) {
+    const result = await service.saveDayStatus(day, status);
+
+    if (!result.success) {
+      dayInput.setError(result.error ?? "Invalid input.");
+      return;
+    }
+
+    dayInput.setError("");
+    setAvailability(await repo.getAll());
+  }
+
+  async function handleRemove(day: number) {
+    await service.removeDay(day);
+    setAvailability(await repo.getAll());
+  }
+
   const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const days = Array.from({ length: 31 }, (_, i) => i + 1);
 
@@ -24,48 +54,27 @@ export default function CalendarComponent(props: CalendarProps) {
     rows.push(days.slice(i, i + 7));
   }
 
-  const [selectedDay, setSelectedDay] = useState<string>("");
   const [selectedStatus, setSelectedStatus] = useState<AvailabilityStatus | "">("");
-  const [error, setError] = useState<string>("");
+  
 
   const availabilityByDay = useMemo(() => {
     const lookup: Record<number, AvailabilityStatus> = {};
-    for (const entry of props.availability) {
+    for (const entry of availability) {
       lookup[entry.day] = entry.status;
     }
     return lookup;
-  }, [props.availability]);
+  }, [availability]);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    const dayNum = Number(selectedDay);
-    if (!Number.isInteger(dayNum) || dayNum < 1 || dayNum > 31) {
-      setError("Please enter a valid day number between 1 and 31.");
-      return;
-    }
+    const dayNum = Number(dayInput.value);
 
-    if (selectedStatus !== "available" && selectedStatus !== "unavailable") {
-      setError("Please choose Available or Unavailable.");
-      return;
-    }
-
-    setError("");
-
-    props.setAvailability((prev) => {
-      const existingIndex = prev.findIndex((entry) => entry.day === dayNum);
-      if (existingIndex !== -1) {
-        const copy = [...prev];
-        copy[existingIndex] = { day: dayNum, status: selectedStatus };
-        return copy;
-      }
-
-      return [...prev, { day: dayNum, status: selectedStatus }];
-    });
+    await handleSave(dayNum, selectedStatus as AvailabilityStatus);
   }
 
-  function removeAvailability(dayToRemove: number) {
-    props.setAvailability((prev) => prev.filter((entry) => entry.day !== dayToRemove));
+  function removeAvailability(day: number) {
+    handleRemove(day);
   }
 
   return (
@@ -76,8 +85,8 @@ export default function CalendarComponent(props: CalendarProps) {
           <label>
             Day:
             <select
-              value={selectedDay}
-              onChange={(e) => setSelectedDay(e.target.value)}
+              value={dayInput.value}
+              onChange={dayInput.onChange}
             >
               <option value="">Select...</option>
               {days.map((d) => (
@@ -92,8 +101,8 @@ export default function CalendarComponent(props: CalendarProps) {
             Status:
             <select
               value={selectedStatus}
-              onChange={(e) => setSelectedStatus(e.target.value as AvailabilityStatus | "")}
-            >
+              onChange={(e) =>setSelectedStatus(e.target.value as AvailabilityStatus | "")}
+              >
               <option value="">Select...</option>
               <option value="available">Available</option>
               <option value="unavailable">Unavailable</option>
@@ -102,19 +111,19 @@ export default function CalendarComponent(props: CalendarProps) {
 
           <button type="submit">Add/Update</button>
 
-          {error && <p className="form-error">{error}</p>}
+          {dayInput.error && <p className="form-error">{dayInput.error}</p>}
         </form>
         <div className="availability-list">
           <h3>Your availability list</h3>
-          {props.availability.length === 0 ? (
+          {availability.length === 0 ? (
             <p>No availability set yet.</p>
           ) : (
             <ul>
-              {props.availability
+              {availability
                 .slice()
                 .sort((a, b) => a.day - b.day)
                 .map((entry) => (
-                  <li key={entry.day}>
+                  <li key={entry.id}>
                     Day {entry.day}: {entry.status}
                     <button
                       type="button"
