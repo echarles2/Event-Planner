@@ -5,8 +5,9 @@ function Header() {
     return(
         <section className="header">
             <header>
-                <h1>📅what's the move</h1>
-                <h3>make moves, not excuses</h3>
+                <NavLink to="/" end>     
+                    <h1>📅what's the move?</h1>
+                </NavLink>
                 <nav>
                     <div className="page-links">
                         <NavLink to="/" end>
