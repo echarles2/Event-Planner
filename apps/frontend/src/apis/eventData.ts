@@ -1,4 +1,4 @@
-import type {Event} from "../components/create-event/CreateEvent";
+import type { Event } from "../../../../shared/types/events";
 
 export const eventTestData: Event[] = [
     {id: 1, name: "Jane's Birthday Party", date: "2026-04-01", location: "123 ABC Street", details: ["Bring a gift"]},

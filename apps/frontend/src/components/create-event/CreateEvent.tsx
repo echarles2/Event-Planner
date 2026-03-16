@@ -12,14 +12,7 @@ import { useState } from "react";
 import { useFormInput } from "../../hooks/useFormHook";
 import { addEvent } from "../services/createEventService";
 import { useCounter } from "../../state/CounterContext";
-
-export interface Event{
-    id: number;
-    name: string;
-    date: string;
-    location?: string;
-    details?: string[];
-}
+import type { Event } from "../../../../../shared/types/events";
 
 interface CreateEventProps{
     onCreateEvent?: (event: Event) => void;

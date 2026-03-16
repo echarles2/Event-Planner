@@ -1,4 +1,4 @@
-import type { Event } from "../components/create-event/CreateEvent";
+import type { Event } from "../../../../shared/types/events";
 import { eventTestData } from "./eventData";
 
 export function fetchEvents(): Event[]{
