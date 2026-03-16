@@ -1,4 +1,4 @@
-import type { Event } from "../create-event/CreateEvent";
+import type { Event } from "../../../../../shared/types/events";
 import { createEvent } from "../../apis/createEventRepo";
 
 export interface Status{

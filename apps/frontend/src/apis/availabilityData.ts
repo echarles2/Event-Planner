@@ -1,4 +1,4 @@
-import type { AvailabilityEntry } from "../types/availability";
+import type { AvailabilityEntry } from "../../../../shared/types/availability";
 
 export const availabilityTestData: AvailabilityEntry[] = [
   { id: "a1", day: 1, status: "available" },

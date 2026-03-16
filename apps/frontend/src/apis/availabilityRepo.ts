@@ -1,4 +1,4 @@
-import type { AvailabilityEntry, AvailabilityStatus } from "../types/availability";
+import type { AvailabilityEntry, AvailabilityStatus } from "../../../../shared/types/availability";
 import { availabilityTestData } from "./availabilityData";
 
 let data: AvailabilityEntry[] = [...availabilityTestData];

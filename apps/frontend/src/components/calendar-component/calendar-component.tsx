@@ -8,7 +8,7 @@
 import "./calendar-component.css";
 import React, {useEffect, useMemo, useState} from "react";
 import { useCounter } from "../../state/CounterContext";
-import type { AvailabilityEntry, AvailabilityStatus } from "../../types/availability";
+import type { AvailabilityEntry, AvailabilityStatus } from "../../../../../shared/types/availability";
 import { AvailabilityRepository } from "../../apis/availabilityRepo";
 import { useFormInput } from "../../hooks/useFormHook";
 import { AvailabilityService } from "../services/availabilityService";

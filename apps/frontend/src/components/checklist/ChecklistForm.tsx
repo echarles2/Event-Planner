@@ -4,8 +4,8 @@ import {
     checklistItemValidation, 
     checklistEventValidation 
 } from "../services/checklistService";
-import type { Checklist } from "../../types/resources";
-import type { Event } from "../create-event/CreateEvent";
+import type { Checklist } from "../../../../../shared/types/resources";
+import type { Event } from "../../../../../shared/types/events";
 import * as EventsRepo from "../../apis/createEventRepo";
 
 // Props for the ChecklistForm component

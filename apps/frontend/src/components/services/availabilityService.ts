@@ -1,4 +1,4 @@
-import type { AvailabilityStatus } from "../../types/availability";
+import type { AvailabilityStatus } from "../../../../../shared/types/availability";
 import { AvailabilityRepository } from "../../apis/availabilityRepo";
 
 export interface SaveAvailabilityResult {
