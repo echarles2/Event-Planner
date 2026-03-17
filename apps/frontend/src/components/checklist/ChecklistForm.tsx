@@ -4,7 +4,7 @@ import {
     checklistItemValidation, 
     checklistEventValidation 
 } from "../services/checklistService";
-import type { Checklist } from "../../../../../shared/types/resources";
+import type { Checklist } from "../../../../../shared/types/checklist";
 import type { Event } from "../../../../../shared/types/events";
 import * as EventsRepo from "../../apis/createEventRepo";
 

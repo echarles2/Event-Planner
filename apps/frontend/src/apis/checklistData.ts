@@ -1,4 +1,4 @@
-import type { Checklist } from "../../../../shared/types/resources";
+import type { Checklist } from "../../../../shared/types/checklist";
 
 /**
  * This Checklist array acts as a placeholder data since there's no current
