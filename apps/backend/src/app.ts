@@ -2,6 +2,7 @@ import express, {Express} from "express";
 import morgan from "morgan";
 import cors from "cors";
 import dotenv from "dotenv";
+import prisma from "./prisma";
 
 import corsOptions from "../config/cors";
 import setupSwagger from "../config/swagger";
@@ -31,6 +32,15 @@ app.get("/",  (_req, res) => {
     res.send("Got response from backend!");
 });
 
+app.get("/availability", async (_req, res) => {
+    try {
+        const availability = await prisma.availabilityEntry.findMany();
+        res.json(availability);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "An error occurred while fetching availability." });
+    }
+});
 //errorhandler catches errors as last element in middleware chain
 // occurs when "next" is invoked
 app.use(errorHandler); 
