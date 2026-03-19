@@ -22,3 +22,20 @@ model AvailabilityEntry {
   day    Int
   status AvailabilityStatus
 }
+
+// Model for Checklist group
+model Checklist {
+  id String @id @default(uuid())
+  eventId String?
+  event Evemt? @relation(fields: [eventId], references: [id])
+  items ChecklistItem[]
+}
+
+// Model for Checklist items
+model ChecklistItem {
+  id String @id @default(uuid())
+  checklistId String
+  checklist Checklist @relation(fields: [checklistId], references: [id])
+  item String
+  completed Boolean @default(false)
+}
