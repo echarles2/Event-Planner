@@ -2,7 +2,7 @@
  * Interface for Event structure.
  */
 export interface Event{
-    id: number;
+    id: string;
     name: string;
     date: string;
     location?: string;

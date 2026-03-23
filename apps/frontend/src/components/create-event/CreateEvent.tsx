@@ -53,7 +53,7 @@ function CreateEvent({onCreateEvent}: CreateEventProps){
         }
 
         const createdEvent = await createNewEvent({
-            id: Date.now(),
+            id: Date.now().toString(),
             name: name.value,
             date: date.value,
             location: location.value || undefined,
@@ -66,7 +66,7 @@ function CreateEvent({onCreateEvent}: CreateEventProps){
         }
 
         onCreateEvent?.({
-            id: Date.now(),
+            id: Date.now().toString(),
             name: name.value,
             date: date.value,
             location: location.value || undefined,
