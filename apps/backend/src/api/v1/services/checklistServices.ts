@@ -1,17 +1,17 @@
-import type { Checklist, ChecklistItem } from "../../../../../../shared/types/checklist";
-
-const checklists: Checklist[] = [];
-const checklistItems: ChecklistItem[] = [];
-
-// temporary ID generator since there's no prisma yet
-const generateId = () => Math.random().toString(36);
+//import type { Checklist, ChecklistItem } from "../../../../../../shared/types/checklist";
+import { prisma } from "../../../../prisma/client";
+import type { Checklist, ChecklistItem } from "../../../../generated/prisma/client";
 
 /**
  * Retrieves all checklists from storage
  * @returns Array of all checklists
  */
 export const getAllChecklists = async (): Promise<Checklist[]> => {
-    return checklists;
+    return prisma.checklist.findMany({
+        include: {
+            items: true
+        }
+    });
 };
 
 /**
@@ -23,13 +23,11 @@ export const createChecklist = async (checklistData: {
     eventId?: string;
 }): Promise<Checklist> => {
     // create a new checklist group
-    const newChecklist: Checklist = {
-        id: generateId(),
-        eventId: checklistData.eventId,
-        items: []
-    };
-
-    checklists.push(newChecklist);
+    const newChecklist: Checklist = await prisma.checklist.create({
+        data: {
+            eventId: checklistData.eventId ?? null
+        }
+    });
 
     return newChecklist;
 };
@@ -45,23 +43,22 @@ export const createChecklistItem = async (checklistItemData: {
     checklistId: string;
     item: string;
 }): Promise<ChecklistItem> => {
-    const checklist = checklists.find(c => c.id === checklistItemData.checklistId);
+    const checklist = await prisma.checklist.findUnique({
+        where: { id: checklistItemData.checklistId },
+    });
+    
     if (!checklist) {
         throw new Error("Checklist not found!");
     }
 
     // create a new checklist item
-    const newChecklistItem: ChecklistItem = {
-        id: generateId(),
-        checklistId:  checklistItemData.checklistId,
-        item: checklistItemData.item,
-        completed: false
-    };
-
-    checklistItems.push(newChecklistItem);
-    // also push into checklist group (since interface includes items[])
-    checklist.items.push(newChecklistItem);
-
+    const newChecklistItem: ChecklistItem = await prisma.checklistItem.create({
+        data: {
+            checklistId:  checklistItemData.checklistId,
+            item: checklistItemData.item,
+            completed: false,
+        }
+    })
     return newChecklistItem;
 }
 
@@ -74,12 +71,18 @@ export const createChecklistItem = async (checklistItemData: {
 export const updateChecklistItem = async (
     id: string
 ): Promise<ChecklistItem> => {
-    const item = checklistItems.find(i => i.id === id);
+    const item = await prisma.checklistItem.findUnique({ where: { id } });
 
     if (!item) throw new Error("Checklist Item not found!");
-    item.completed = !item.completed;
 
-    return item;
+    const updatedItem = await prisma.checklistItem.update({
+        where: { id },
+        data: {
+            completed: !item.completed
+        }
+    });
+
+    return updatedItem;
 };
 
 /**
@@ -87,32 +90,20 @@ export const updateChecklistItem = async (
  * @param id - the ID of the checklist to be deleted
  */
 export const deleteChecklist = async (id: string): Promise<void> => {
-    const index: number = checklists.findIndex(c => c.id === id);
+    const checklist = await prisma.checklist.findUnique({ where: { id } });
+    if (!checklist) throw new Error(`Checklist with ID ${id} not found`);
 
-    if (index === -1) {
-        throw new Error(`Checklist with ID ${id} not found`);
-    }
-
-    checklists.splice(index, 1);
-}
+    await prisma.checklistItem.deleteMany({ where: { checklistId: id } });
+    await prisma.checklist.delete({ where: { id } });
+};
 
 /**
  * Delete the Checklist item
  * @param id - the ID of the checklist item to be deleted
  */
 export const deleteChecklistItem = async (id: string): Promise<void> => {
-    const index: number = checklistItems.findIndex(item => item.id === id);
+    const item = await prisma.checklistItem.findUnique({ where: { id } });
+    if (!item) throw new Error(`Checklist Item with ID ${id} not found`);
 
-    if (index === -1) {
-        throw new Error(`Checklist Item with ID ${id} not found`);
-    }
-
-    const item = checklistItems[index];
-    // remove from the checklist.items[] too
-    const checklist = checklists.find(c => c.id === item.checklistId);
-    if (checklist) {
-        checklist.items = checklist.items.filter(i => i.id !== id);
-    }
-
-    checklistItems.splice(index, 1);
-}
+    await prisma.checklistItem.delete({ where: { id } });
+};
