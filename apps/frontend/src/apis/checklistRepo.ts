@@ -1,62 +1,125 @@
-import type { Checklist } from "../../../../shared/types/checklist";
-import { testChecklistData } from "./checklistData";
+import type { Checklist, ChecklistItem } from "../../../../shared/types/checklist";
 
-// In-memory data to simulate an external resource & allow mutation
-let checklistStore: Checklist[]= [...testChecklistData];
+type ChecklistsResponseJSON = {message: string, data: Checklist[]};
+type ChecklistResponseJSON = {message: string, data: Checklist};
+type ChecklistItemResponseJSON = {message: string, data: ChecklistItem};
 
-/**
- * Get all Checklist items
- * @returns - The entire Checklist Data
- */
-export function fetchChecklists(): Checklist[] {
-    return checklistStore;
-}
+// Base url for backend
+const API_BASE = `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
 
 /**
- * Get a checklist by ID
- * @param checklistId - The ID of the checklist to be retrieved
- * @returns the checklist item corresponding to the checklist ID
+ * GET all checklists
+ * @returns - All checklist data
  */
-export function getChecklistById(checklistId: string): Checklist {
-    const foundChecklist = checklistStore.find(c => c.id === checklistId);
+export async function fetchChecklists(): Promise<Checklist[]> {
+    const response: Response = await fetch(`${API_BASE}/checklists`);
 
-    if (!foundChecklist) {
-        throw new Error(`Failed to fetch checklist with ${checklistId}`)
+    if (!response.ok) {
+        throw new Error("Failed to fetch Checklists")
     }
-    return foundChecklist;
+    
+    const json: ChecklistsResponseJSON = await response.json();
+    return json.data;
 }
 
 /**
- * Create a new checklist item
- * @param item - New checklist to be added
+ * CREATE a checklist
+ * @param eventId - (Optional) event ID to attach the checklist to
+ * @returns - The newly created checklist
+ * @throws - Error if the checklist can't be created
  */
-export function createChecklist(item: Checklist): void {
-    checklistStore.push(item);
+export async function createChecklist(
+    eventId?: string
+): Promise<Checklist> {
+    const response: Response = await fetch(`${API_BASE}/checklists`, 
+    {
+        method: "POST",
+        body: JSON.stringify({ eventId }),
+        headers: { "Content-Type": "application/json" }
+    });
+
+    if(!response.ok) {
+        throw new Error("Failed to create new Checklist group");
+    }
+
+    const json: ChecklistResponseJSON = await response.json();
+    return json.data;
 }
 
 /**
- * Update an existing checklist item
- *  @param checklistId - The to-be updated checklist item
- * @param updatedItem - The object containing the fields to be updated (partially)
+ * DELETE a Checklist 
+ * @param id - the ID of the checklist to delete
+ * @throws - Error if the checklist can't be deleted
  */
-export function updateChecklist(
+export async function deleteChecklist(id: string): Promise<void> {
+    const response: Response = await fetch(`${API_BASE}/checklists/${id}`, 
+    {
+        method: "DELETE",
+    });
+
+    if(!response.ok) {
+        throw new Error(`Failed to delete checklist with ${id}`);
+    }
+}
+
+/**
+ * CREATE a checklist item
+ * @param checklistId - The ID of the checklist to add the item to
+ * @param item - New task item for the checklist
+ * @returns - The newly added checklist item
+ * @throws - Error if the checklist item can't be created
+ */
+export async function createChecklistItem(
     checklistId: string,
-    updatedItem: Partial<Checklist>): void {
-    checklistStore = checklistStore.map(item => 
-        item.id === checklistId ? { ...item, ...updatedItem } : item
-    );
+    item: string
+): Promise<ChecklistItem> {
+    const response: Response = await fetch(`${API_BASE}/checklist-items`,
+    {
+        method: "POST",
+        body: JSON.stringify({ checklistId, item }),
+        headers: { "Content-Type": "application/json" }
+    });
+
+    if(!response.ok) {
+        throw new Error("Failed to create new checklist task");
+    }
+
+    const json: ChecklistItemResponseJSON = await response.json();
+    return json.data;
 }
 
 /**
- * Delete a Checklist by ID
- * @param checklistId - The ID of the checklist to be removed
+ * UPDATE an existing checklist item (toggle on/off completion)
+ * @param id - Checklist item ID to update
+ * @returns - The updated checklist item
+ * @throws - Error if the checklist item can't be updated
  */
-export function deleteChecklist(checklistId: string): void {
-    const foundChecklist = checklistStore.find(c => c.id === checklistId);
+export async function updateChecklistItem(id: string): Promise<ChecklistItem> {
+    const response: Response = await fetch(`${API_BASE}/checklist-items/${id}`,
+    {
+        method: "PATCH",
+    });
 
-    if (!foundChecklist) {
-        throw new Error(`Failed to delete checklist with ${checklistId}`)
+    if(!response.ok) {
+        throw new Error("Failed to update checklist item");
     }
 
-    checklistStore = checklistStore.filter(c => c.id !== checklistId);
+    const json: ChecklistItemResponseJSON = await response.json();
+    return json.data;
+}
+
+/**
+ * DELETE a single checklist item
+ * @param id -  the ID of the checklist item to delete
+ * @throws - Error if the checklist item can't be deleted
+ */
+export async function deleteChecklistItem(id: string): Promise<void> {
+    const response: Response = await fetch(`${API_BASE}/checklist-items/${id}`, 
+    {
+        method: "DELETE",
+    });
+
+    if(!response.ok) {
+        throw new Error(`Failed to delete checklist item with ${id}`);
+    }
 }
