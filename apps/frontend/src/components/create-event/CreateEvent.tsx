@@ -10,7 +10,7 @@ import "../../index.css";
 import "./CreateEvent.css";
 import { useState } from "react";
 import { useFormInput } from "../../hooks/useFormHook";
-import { addEvent } from "../services/createEventService";
+import { createNewEvent } from "../services/createEventService";
 import { useCounter } from "../../state/CounterContext";
 import type { Event } from "../../../../../shared/types/events";
 
@@ -31,7 +31,7 @@ function CreateEvent({onCreateEvent}: CreateEventProps){
             setDetails(details.filter((_, i) => i !==index));
     }
     
-    function handleSubmit(e: React.FormEvent){
+    async function handleSubmit(e: React.FormEvent){
         e.preventDefault();
 
         name.setError("");
@@ -52,7 +52,8 @@ function CreateEvent({onCreateEvent}: CreateEventProps){
             return;
         }
 
-        const createdEvent = addEvent({
+        const createdEvent = await createNewEvent({
+            id: Date.now().toString(),
             name: name.value,
             date: date.value,
             location: location.value || undefined,
@@ -65,7 +66,7 @@ function CreateEvent({onCreateEvent}: CreateEventProps){
         }
 
         onCreateEvent?.({
-            id: Date.now(),
+            id: Date.now().toString(),
             name: name.value,
             date: date.value,
             location: location.value || undefined,
