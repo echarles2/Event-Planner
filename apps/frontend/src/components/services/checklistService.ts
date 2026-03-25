@@ -1,5 +1,5 @@
 import * as ChecklistRepo from "../../apis/checklistRepo";
-import type { Checklist } from "../../../../../shared/types/resources";
+import type { Checklist } from "../../../../../shared/types/checklist";
 
 /**
  * Request to get all Checklist from the repository
