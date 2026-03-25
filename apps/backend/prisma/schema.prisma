@@ -23,10 +23,12 @@ model AvailabilityEntry {
   status AvailabilityStatus
 }
 
-// Temp model for Event 
 model Event {
-  id String @id @default(uuid())
-  name String
+  id        String      @id @default(uuid())
+  name      String
+  date      DateTime
+  location  String?
+  details   String?
   checklist Checklist? // 1-to-1 relationship (not an actual table column)
 }
 
