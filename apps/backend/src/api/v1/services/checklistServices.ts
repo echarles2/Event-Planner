@@ -1,7 +1,6 @@
-//import type { Checklist, ChecklistItem } from "../../../../../../shared/types/checklist";
-import { prisma } from "../../../../prisma/client";
-import type { Checklist, ChecklistItem } from "../../../../generated/prisma/client";
-
+import prisma from "../../../../prisma/client";
+//import type { Checklist, ChecklistItem } from "../../../../generated/prisma/client";
+import { Checklist, ChecklistItem } from "generated/prisma/client";
 /**
  * Retrieves all checklists from storage
  * @returns Array of all checklists
