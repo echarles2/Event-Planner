@@ -83,3 +83,12 @@ input{
     padding-top: 0.3rem;
     padding-bottom: 0.3rem;
 }
+
+.recent-event{
+    margin-top: 2rem;
+    border: 2px solid;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.5rem;
+    border-radius: 8px;
+}
