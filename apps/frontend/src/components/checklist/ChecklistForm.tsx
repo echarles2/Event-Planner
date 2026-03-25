@@ -27,7 +27,9 @@ export function ChecklistForm({
 }: ChecklistFormProps) {
     const itemInput = useFormInput();
     const eventIdInput = useFormInput();
-    const events: Event[] = EventsRepo.fetchEvents();
+    const eventsPromise = EventsRepo.fetchEvents();
+    let events: Event[] = [];
+    eventsPromise.then(res => {events = res;});
 
     /**
      * Filters out events that already have a checklist
