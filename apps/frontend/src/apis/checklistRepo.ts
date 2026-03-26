@@ -1,4 +1,4 @@
-import type { Checklist } from "../../../../shared/types/resources";
+import type { Checklist } from "../../../../shared/types/checklist";
 import { testChecklistData } from "./checklistData";
 
 // In-memory data to simulate an external resource & allow mutation

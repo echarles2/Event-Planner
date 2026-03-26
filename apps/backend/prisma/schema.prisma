@@ -10,6 +10,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url = env("DATABASE_URL")
 }
 
 enum AvailabilityStatus {
@@ -21,4 +22,30 @@ model AvailabilityEntry {
   id     String             @id @default(cuid())
   day    Int
   status AvailabilityStatus
+}
+
+model Event {
+  id        String      @id @default(uuid())
+  name      String
+  date      DateTime
+  location  String?
+  details   String?
+  checklist Checklist? // 1-to-1 relationship (not an actual table column)
+}
+
+// Model for Checklist group
+model Checklist {
+  id String @id @default(uuid())
+  eventId String? @unique // (FK) ensures only 1 checklist per event, enforcing 1-to-1
+  event Event? @relation(fields: [eventId], references: [id]) // references id column in Event table
+  items ChecklistItem[] // 1-to-many
+}
+
+// Model for Checklist items
+model ChecklistItem {
+  id String @id @default(uuid())
+  checklistId String // FK to Checklist table
+  checklist Checklist @relation(fields: [checklistId], references: [id])
+  item String
+  completed Boolean @default(false)
 }

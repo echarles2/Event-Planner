@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { ChecklistForm } from './ChecklistForm';
 import { ChecklistSection } from './ChecklistSection';
-import type { Checklist } from "../../../../../shared/types/resources";
+import type { Checklist } from "../../../../../shared/types/checklist";
+import type { Event } from '../../../../../shared/types/events';
 import { groupChecklistsByEvent } from "../services/checklistService";
 import * as EventsRepo from "../../apis/createEventRepo";
 import './Checklist.css';
@@ -20,7 +21,8 @@ import { useCounter } from "../../state/CounterContext";
  */
 function ChecklistWrapper() {
     const [checklists, setChecklists] = useState<Checklist[]>([]);
-    const events = EventsRepo.fetchEvents();
+    let events: Event[] = [];
+    EventsRepo.fetchEvents().then(res => {events =res;}) 
     const { counter, increment } = useCounter();
 
     // Group checklists by event using the service

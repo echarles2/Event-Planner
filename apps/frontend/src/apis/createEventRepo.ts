@@ -1,25 +1,40 @@
 import type { Event } from "../../../../shared/types/events";
-import { eventTestData } from "./eventData";
 
-export function fetchEvents(): Event[]{
-    return eventTestData;
-}
+type EventsResponseJSON = {message: string, data: Event[]};
+type EventResponseJSON = {message: string, data: Event};
 
-export function getEventById(eventId: number): Event{
-    const foundEvent = eventTestData.find(e => e.id === eventId);
+const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
+const EVENT_ENDPOINT = "/create-event"
 
-    if(!foundEvent) {
-        throw new Error(`Failed to fetch event with ${eventId}`);
+export async function fetchEvents(): Promise<Event[]> {
+    const eventResponse: Response = await fetch(
+        `${BASE_URL}${EVENT_ENDPOINT}`
+    );
+
+    if(!eventResponse.ok) {
+        throw new Error("Failed to fetch events.");
     }
 
-    return foundEvent;
+    const json: EventsResponseJSON = await eventResponse.json();
+    return json.data;
 }
 
-export async function createEvent(event: Omit<Event, "id">): Promise<Event>{
-    const createdEvent: Event = {
-        ...event,
-        id: Date.now()
-    };
-    eventTestData.push(createdEvent);
-    return createdEvent;
+export async function createEvent(event: Event) {
+    const eventResponse: Response = await fetch(
+        `${BASE_URL}${EVENT_ENDPOINT}`,
+        {
+            method: "POST",
+            body: JSON.stringify(event),
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }
+    );
+
+    if(!eventResponse.ok) {
+        throw new Error("Failed to create event.");
+    }
+
+    const json: EventResponseJSON = await eventResponse.json();
+    return json.data;
 }
