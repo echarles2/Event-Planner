@@ -1,7 +1,7 @@
 import type { FormEvent } from "react";
 import { useFormInput } from "../../hooks/useFormHook";
 import { checklistItemValidation } from "../services/checklistService";
-import type { Checklist } from "../../../../../shared/types/resources";
+import type { Checklist } from "../../../../../shared/types/checklist";
 import Todo from "./Todo";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark, faPlus } from '@fortawesome/free-solid-svg-icons'

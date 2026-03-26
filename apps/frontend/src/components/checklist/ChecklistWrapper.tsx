@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ChecklistForm } from './ChecklistForm';
 import { ChecklistSection } from './ChecklistSection';
-import type { Checklist } from "../../../../../shared/types/resources";
+import type { Checklist } from "../../../../../shared/types/checklist";
 import type { Event } from '../../../../../shared/types/events';
 import { groupChecklistsByEvent } from "../services/checklistService";
 import * as EventsRepo from "../../apis/createEventRepo";

@@ -8,6 +8,7 @@ import corsOptions from "../config/cors";
 import setupSwagger from "../config/swagger";
 import errorHandler from "./api/v1/middleware/errorHandler";
 
+import checklistRoutes from "../src/api/v1/routes/checklistRoutes";
 import createEventRoutes from "./api/v1/routes/createEventRoute";
 
 // initialize express application
@@ -44,6 +45,8 @@ app.get("/availability", async (_req, res) => {
     }
 });
 
+// Use the checklist routes
+app.use("/api/v1", checklistRoutes);
 app.use("/api/v1", createEventRoutes);
 
 //errorhandler catches errors as last element in middleware chain
