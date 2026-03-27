@@ -6,30 +6,29 @@ import {
 } from "../services/checklistService";
 import type { Checklist } from "../../../../../shared/types/checklist";
 import type { Event } from "../../../../../shared/types/events";
-import * as EventsRepo from "../../apis/createEventRepo";
 
 // Props for the ChecklistForm component
 interface ChecklistFormProps {
     checklists: Checklist[];
+    events: Event[];
     onAddChecklist: (eventId: string | undefined, item: string) => void;
 }
 /**
  * Renders a Checklist form to enable event selection & add to-do items.
  * Uses "checklistItemValidation" service to validate the to-do item input. 
  * Uses "checklistEventValidation" service to validate the selected event before calling "onAddChecklist".
- * @param props- checklists: Existing checklist items used to filter available events.
+ * @param props - checklists: Existing checklist items used to filter available events.
+ * @param props - events: Events are passed from parent component
  * @param props - onAddChecklist: Callback function called with eventId & item when the form is submitted successfully.
  * @returns - The rendered checklist form.
  */
 export function ChecklistForm({
     checklists,
+    events,
     onAddChecklist,
 }: ChecklistFormProps) {
     const itemInput = useFormInput();
     const eventIdInput = useFormInput();
-    const eventsPromise = EventsRepo.fetchEvents();
-    let events: Event[] = [];
-    eventsPromise.then(res => {events = res;});
 
     /**
      * Filters out events that already have a checklist

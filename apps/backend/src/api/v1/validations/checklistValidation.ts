@@ -11,6 +11,9 @@ export const checklistSchema: ObjectSchema = Joi.object({
  * Defines the shape of a checklist item received in JSON
  */
 export const checklistItemSchema: ObjectSchema = Joi.object({
+    checklistId: Joi.string().required().messages({
+        "any.required": "Checklist ID is required"
+    }),
     item: Joi.string().required().messages({
         "any.required": "Checklist item is required",
         "string.empty": "Checklist item cannot be empty"

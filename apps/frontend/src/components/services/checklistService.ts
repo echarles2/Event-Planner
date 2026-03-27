@@ -1,5 +1,5 @@
 import * as ChecklistRepo from "../../apis/checklistRepo";
-import type { Checklist } from "../../../../../shared/types/checklist";
+import type { Checklist, ChecklistItem } from "../../../../../shared/types/checklist";
 
 /**
  * Request to get all Checklist from the repository
@@ -56,16 +56,16 @@ export function checklistEventValidation(
  */
 export function groupChecklistsByEvent(
     checklists: Checklist[]
-): Map<string, Checklist[]> {
-    const groups = new Map<string, Checklist[]>();
+): Map<string, { checklistId: string, items: ChecklistItem[] }> {
+    const groups = new Map<string, { checklistId: string, items: ChecklistItem[] }>();
 
-    for (const item of checklists) {
-        const key = item.eventId ?? "personal";
-        const existing = groups.get(key) || [];
-        existing.push(item);
-        groups.set(key, existing);
+    for (const checklist of checklists) {
+        const key = checklist.eventId ?? "personal";
+        groups.set(key, {
+            checklistId: checklist.id,
+            items: checklist.items
+        });
     }
-
     return groups;
 }
 
@@ -96,16 +96,4 @@ export function checklistItemValidation(
     }
 
     return { isValid, errors };
-}
-
-/**
- * Determines whether a checklist is complete (all to-do items have been ticked-off)
- * Can be reused as aprogress indicator in Events & Checklist components
- * @param items - An array; each element must be an object that is marked as "completed"
- * @returns - boolean: whether a checklist is complete/incomplete
- */
-export function isChecklistComplete(
-    items: { completed: boolean }[]
-): boolean {
-    return items.length > 0 && items.every(i => i.completed);
 }
