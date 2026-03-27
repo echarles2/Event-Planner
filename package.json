@@ -99,7 +99,7 @@
     "postcss": "^8.5.6",
     "prelude-ls": "^1.2.1",
     "punycode": "^2.3.1",
-    "react": "^19.2.3",
+    "react": "^19.2.4",
     "react-dom": "^19.2.3",
     "react-refresh": "^0.18.0",
     "react-router": "^7.13.0",
@@ -141,5 +141,8 @@
   "bugs": {
     "url": "https://github.com/echarles2/Event-Planner/issues"
   },
-  "homepage": "https://github.com/echarles2/Event-Planner#readme"
+  "homepage": "https://github.com/echarles2/Event-Planner#readme",
+  "devDependencies": {
+    "prisma": "^6.19.2"
+  }
 }
