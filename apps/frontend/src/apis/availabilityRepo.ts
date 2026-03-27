@@ -1,6 +1,8 @@
 import type { AvailabilityEntry, AvailabilityStatus } from "../../../../shared/types/availability";
 
-const BASE_URL = `${import.meta.env.VITE_API_URL}/api/v1/availability`;
+const BASE_URL = import.meta.env.DEV
+  ? "http://localhost:3000/api/v1/availability"
+  : "/api/v1/availability";
 
 export class AvailabilityRepository {
     async getAll(): Promise<AvailabilityEntry[]> {
