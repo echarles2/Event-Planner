@@ -1,7 +1,7 @@
 import type { FormEvent } from "react";
 import { useFormInput } from "../../hooks/useFormHook";
 import { checklistItemValidation } from "../services/checklistService";
-import type { Checklist } from "../../../../../shared/types/checklist";
+import type { ChecklistItem } from "../../../../../shared/types/checklist";
 import Todo from "./Todo";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark, faPlus } from '@fortawesome/free-solid-svg-icons'
@@ -9,7 +9,7 @@ import { faXmark, faPlus } from '@fortawesome/free-solid-svg-icons'
 //Props for the ChecklistSection component
 interface ChecklistSectionProps {
     eventName: string;
-    items: Checklist[];
+    items: ChecklistItem[];
     onAddItem: (item: string) => void;
     onToggleItem: (id: string) => void;
     onDeleteItem: (id: string) => void;
