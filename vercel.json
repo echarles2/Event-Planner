@@ -5,8 +5,8 @@
       "destination": "/api"
     },
     {
-      "source": "/:path*",
-      "destination": "/apps/frontend/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
