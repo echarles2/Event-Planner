@@ -1,4 +1,4 @@
-import prisma from "../../../../prisma/client";
+import prisma from "../../../../prisma/client.js";
 //import type { Checklist, ChecklistItem } from "../../../../generated/prisma/client";
 import { Checklist, ChecklistItem } from "generated/prisma/client.js";
 /**
