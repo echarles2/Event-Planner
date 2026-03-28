@@ -99,3 +99,32 @@ font-size: 0.8rem;
  padding: 0%;
  margin: 0%;
 }
+
+.p-datepicker {
+  background: #1F2C33;
+  opacity: 1;
+  border-radius: 10px;
+}
+
+.p-datepicker:not(.p-datepicker-inline) {
+  background: #1F2C33;
+  border: 1px solid #ccc;
+}
+
+.p-datepicker table td > span {
+  background: transparent;
+}
+
+.p-datepicker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.p-datepicker-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}

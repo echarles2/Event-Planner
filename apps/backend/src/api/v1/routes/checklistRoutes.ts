@@ -1,7 +1,7 @@
 import express, {Router} from "express";
-import * as checklistControllers from "../controllers/checklistControllers";
-import { validateRequest } from "../middleware/validate";
-import { checklistSchema, checklistItemSchema } from "../validations/checklistValidation";
+import * as checklistControllers from "../controllers/checklistControllers.js";
+import { validateRequest } from "../middleware/validate.js";
+import { checklistSchema, checklistItemSchema } from "../validations/checklistValidation.js";
 
 const router: Router = express.Router();
 // For checklist group

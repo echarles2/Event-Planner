@@ -2,6 +2,6 @@ export type AvailabilityStatus = "available" | "unavailable";
 
 export type AvailabilityEntry = {
     id: string;
-    day: number;
+    date: string;
     status: AvailabilityStatus;
 };

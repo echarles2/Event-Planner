@@ -2,14 +2,14 @@ import express, {Express} from "express";
 import morgan from "morgan";
 import cors from "cors";
 import dotenv from "dotenv";
-import prisma from "../prisma/client";
 
-import corsOptions from "../config/cors";
-import setupSwagger from "../config/swagger";
-import errorHandler from "./api/v1/middleware/errorHandler";
+import corsOptions from "../config/cors.js";
+import setupSwagger from "../config/swagger.js";
+import errorHandler from "./api/v1/middleware/errorHandler.js";
 
-import checklistRoutes from "../src/api/v1/routes/checklistRoutes";
-import createEventRoutes from "./api/v1/routes/createEventRoute";
+import checklistRoutes from "./api/v1/routes/checklistRoutes.js";
+import createEventRoutes from "./api/v1/routes/createEventRoute.js";
+import availabilityRoutes from "./api/v1/routes/availabilityRoutes.js";
 
 // initialize express application
 const app: Express = express();
@@ -35,19 +35,10 @@ app.get("/",  (_req, res) => {
     res.send("Got response from backend!");
 });
 
-app.get("/availability", async (_req, res) => {
-    try {
-        const availability = await prisma.availabilityEntry.findMany();
-        res.json(availability);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "An error occurred while fetching availability." });
-    }
-});
-
 // Use the checklist routes
 app.use("/api/v1", checklistRoutes);
 app.use("/api/v1", createEventRoutes);
+app.use("/api/v1", availabilityRoutes);
 
 //errorhandler catches errors as last element in middleware chain
 // occurs when "next" is invoked
