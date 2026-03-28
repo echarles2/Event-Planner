@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import * as checklistService from "../services/checklistServices";
-import { successResponse } from "../models/responseModel";
-import { checklistItemSchema } from "../validations/checklistValidation";
+import * as checklistService from "../services/checklistServices.js";
+import { successResponse } from "../models/responseModel.js";
+import { checklistItemSchema } from "../validations/checklistValidation.js";
 
 export const getAllChecklists = async (
     _req: Request,

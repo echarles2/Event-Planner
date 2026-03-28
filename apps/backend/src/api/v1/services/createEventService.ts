@@ -1,4 +1,4 @@
-import type {Event} from "../../../../../../shared/types/events";
+import type {Event} from "../../../../../../shared/types/events.js";
 
 let events: Event[] = [];
 

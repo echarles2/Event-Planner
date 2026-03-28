@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { fetchAvailability, createOrUpdateAvailability, deleteAvailability} from "../controllers/availabilityController";
-import { availabilitySchema } from "../validations/availabilityValidation";
-import { validateRequest } from "../middleware/validate";
+import { fetchAvailability, createOrUpdateAvailability, deleteAvailability} from "../controllers/availabilityController.js";
+import { availabilitySchema } from "../validations/availabilityValidation.js";
+import { validateRequest } from "../middleware/validate.js";
 
 const router = Router();
 

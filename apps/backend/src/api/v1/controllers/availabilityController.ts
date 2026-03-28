@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { getAllAvailability, saveAvailability, deleteAvailabilityByDate } from "../services/availabilityService";
+import { getAllAvailability, saveAvailability, deleteAvailabilityByDate } from "../services/availabilityService.js";
 
 
 export const fetchAvailability = async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
