@@ -1,6 +1,6 @@
 import prisma from "../../../../prisma/client.js";
 //import type { Checklist, ChecklistItem } from "../../../../generated/prisma/client";
-import { Checklist, ChecklistItem } from "generated/prisma/client.js";
+import { Checklist, ChecklistItem } from "../../../../generated/prisma/client.js";
 /**
  * Retrieves all checklists from storage
  * @returns Array of all checklists

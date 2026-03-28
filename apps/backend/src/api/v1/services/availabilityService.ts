@@ -1,5 +1,5 @@
 import prisma from "../../../../prisma/client.js";
-import { AvailabilityEntry } from "generated/prisma/client.js";
+import { AvailabilityEntry } from "../../../../generated/prisma/client.js";
 
 export const getAllAvailability = async (): Promise<AvailabilityEntry[]> => {
     return prisma.availabilityEntry.findMany({
