@@ -3,13 +3,13 @@ import morgan from "morgan";
 import cors from "cors";
 import dotenv from "dotenv";
 
-import corsOptions from "../config/cors";
-import setupSwagger from "../config/swagger";
-import errorHandler from "./api/v1/middleware/errorHandler";
+import corsOptions from "../config/cors.js";
+import setupSwagger from "../config/swagger.js";
+import errorHandler from "./api/v1/middleware/errorHandler.js";
 
-import checklistRoutes from "./api/v1/routes/checklistRoutes";
-import createEventRoutes from "./api/v1/routes/createEventRoute";
-import availabilityRoutes from "./api/v1/routes/availabilityRoutes";
+import checklistRoutes from "./api/v1/routes/checklistRoutes.js";
+import createEventRoutes from "./api/v1/routes/createEventRoute.js";
+import availabilityRoutes from "./api/v1/routes/availabilityRoutes.js";
 
 // initialize express application
 const app: Express = express();
