@@ -2,7 +2,6 @@ import express, {Express} from "express";
 import morgan from "morgan";
 import cors from "cors";
 import dotenv from "dotenv";
-import prisma from "../prisma/client";
 
 import corsOptions from "../config/cors";
 import setupSwagger from "../config/swagger";
