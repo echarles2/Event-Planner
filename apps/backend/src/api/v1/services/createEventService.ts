@@ -1,5 +1,6 @@
-import type {Event} from "../../../../../../shared/types/events";
-import prisma from "../../../../prisma/client";
+
+import type {Event} from "../../../../../../shared/types/events.js";
+import prisma from "../../../../prisma/client.js";
 
 export async function fetchAllEvents(): Promise<Event[]>{
     const events = await prisma.event.findMany();

@@ -13,20 +13,21 @@ export class AvailabilityService {
         this.repo = repo;
     }
 
-    async saveDayStatus(day: number, status: AvailabilityStatus): Promise<SaveAvailabilityResult> {
-        if (!Number.isInteger(day) || day < 1 || day > 31) {
-            return { success: false, error: "Please enter a valid day number between 1 and 31." };
-    }
+    async saveDayStatus(date: string, status: AvailabilityStatus): Promise<SaveAvailabilityResult> {
+        if (!date) {
+            return { success: false, error: "Please select a valid date." };
+        }
+
 
         if (status !== "available" && status !== "unavailable") {
             return { success: false, error: "Please choose Available or Unavailable." };
         }
 
-        await this.repo.upsertByDay(day, status);
+        await this.repo.saveDayStatus(date, status);
         return { success: true };
     }
 
-    async removeDay(day: number): Promise<void> {
-        await this.repo.deleteByDay(day);
+    async removeDay(date: string): Promise<void> {
+        await this.repo.deleteByDate(date);
     }
 }

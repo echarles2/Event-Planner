@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import * as createEventService from "../services/createEventService";
-import { successResponse } from "../models/responseModel";
+import * as createEventService from "../services/createEventService.js";
+import { successResponse } from "../models/responseModel.js";
 
 export const getAllEvents = async(
     _req: Request,
