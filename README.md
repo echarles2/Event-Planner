@@ -70,3 +70,29 @@ I.4: Architectural Layout Document
 My Checklist Architecture Documentation - Lalaine  
 Create Event Architecture Documentation - Julia  
 Availability/Calendar Architecture Documentation - Ethan 
+
+## Sprint 4  
+T.1: Back-end App Initialization - Julia  
+T.2: Development SQL Database - Ethan  
+T.3: Prisma Installation and Client Initialization - Ethan  
+T.4: Back-end CORS Configuration - Julia  
+
+I.1: Back-end Resource Endpoint  
+Create Event Endpoint - Julia  
+Checklist Endpoint - Lalaine  
+Availability Endpoint - Ethan  
+
+I.2: Resource Database Schema  
+Create Event Model - Julia  
+Checklist/ChecklistItem Models - Lalaine  
+AvailabilityEntry Model - Ethan  
+
+I.3: Front-end Repository sends requests to back-end  
+Create Event Repository Refactor - Julia  
+Checklist Repository Refactor - Lalaine  
+Availability Repository Refactor - Ethan  
+
+I.4: Application State Persistence  
+Recently Created Events Data Persistence - Julia  
+Checklist Data Persistence - Lalaine  
+Availability/Calendar Data Persistence - Ethan  
