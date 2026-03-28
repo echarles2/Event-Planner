@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { ObjectSchema } from "joi";
 
-import { MiddlewareFunction, RequestData } from "../types/express.js";
+import { MiddlewareFunction} from "../types/express.js";
 
 // validate method provided by Joi package=
 export const validate = <T>(schema: ObjectSchema<T>, data:T): void => {
@@ -22,12 +22,7 @@ export const validate = <T>(schema: ObjectSchema<T>, data:T): void => {
 export const validateRequest = (schema: ObjectSchema): MiddlewareFunction => {
     return(req: Request, res: Response, next: NextFunction) => {
         try {
-            const data: RequestData = {
-                ...req.body,
-                ...req.params,
-                ...req.query
-            };
-            validate(schema, data);
+            validate(schema, req.body);
             // invoke next middleware if no error is caught
             next();
         } catch(error) {
