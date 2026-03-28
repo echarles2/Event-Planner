@@ -6,7 +6,8 @@ export interface Status{
     success: boolean;
 }
 
-export async function createNewEvent(event: Event){
+export async function createNewEvent(event: Omit<Event, "id">)
+: Promise<{success:true; data: Event} | {success: false; error: string}>{
     if (event.name.trim().length < 3){
         return{
             error: "Event name must be at least 3 letters.",
@@ -14,9 +15,9 @@ export async function createNewEvent(event: Event){
         }
     }
 
-    await eventRepo.createEvent(event);
-
+    const createdEvent = await eventRepo.createEvent(event);
     return{
-        success: true
+        success: true,
+        data: createdEvent
     }
 }

@@ -19,7 +19,7 @@ export async function fetchEvents(): Promise<Event[]> {
     return json.data;
 }
 
-export async function createEvent(event: Event) {
+export async function createEvent(event: Omit<Event, "id">) {
     const eventResponse: Response = await fetch(
         `${BASE_URL}${EVENT_ENDPOINT}`,
         {
