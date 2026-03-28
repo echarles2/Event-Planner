@@ -7,7 +7,7 @@ import corsOptions from "../config/cors";
 import setupSwagger from "../config/swagger";
 import errorHandler from "./api/v1/middleware/errorHandler";
 
-import checklistRoutes from "../src/api/v1/routes/checklistRoutes";
+import checklistRoutes from "./api/v1/routes/checklistRoutes";
 import createEventRoutes from "./api/v1/routes/createEventRoute";
 import availabilityRoutes from "./api/v1/routes/availabilityRoutes";
 
