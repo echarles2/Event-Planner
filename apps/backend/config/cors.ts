@@ -20,7 +20,7 @@ const corsOptions: CorsOptions = {
     },
     // allow specific headers, methods, and inclusion of credentials
     allowedHeaders:['Content-Type', 'Authorization'],
-    methods: ["GET", "PUT", "POST", "DELETE", "OPTIONS"],
+    methods: ["GET", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
     credentials: true
 }
 

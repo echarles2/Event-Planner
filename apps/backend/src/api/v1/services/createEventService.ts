@@ -1,12 +1,19 @@
+
 import type {Event} from "../../../../../../shared/types/events.js";
+import prisma from "../../../../prisma/client.js";
 
-let events: Event[] = [];
-
-export function fetchAllEvents(): Event[]{
-    return events;
+export async function fetchAllEvents(): Promise<Event[]>{
+    const events = await prisma.event.findMany();
+    return events.map (e => ({
+        id: e.id,
+        name: e.name,
+        date: e.date.toISOString(),
+        location: e.location ?? undefined,
+        details: e.details ? JSON.parse(e.details) : []
+    }));
 }
 
-export function createEvent(event: Event): Event{
+export async function createEvent(event: Event): Promise<Event>{
     if (event.name.trim().length < 3){
         throw new Error("Name must be at least 3 letters.");
     }
@@ -27,7 +34,20 @@ export function createEvent(event: Event): Event{
         throw new Error("Location must be less than 50 characters.");
     }
 
-    events.push(event);
+    const newEvent = await prisma.event.create({
+        data: {
+            name: event.name,
+            date: new Date(event.date),
+            location: event.location,
+            details: JSON.stringify(event.details)
+        }
+    });
 
-    return event;
+    return{
+        id: newEvent.id,
+        name: newEvent.name,
+        date: newEvent.date.toISOString(),
+        location: newEvent.location ?? undefined,
+        details: newEvent.details ? JSON.parse(newEvent.details) : []
+    };
 }

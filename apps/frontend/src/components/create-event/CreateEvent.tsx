@@ -8,11 +8,12 @@
 
 import "../../index.css";
 import "./CreateEvent.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useFormInput } from "../../hooks/useFormHook";
 import { createNewEvent } from "../services/createEventService";
 import { useCounter } from "../../state/CounterContext";
 import type { Event } from "../../../../../shared/types/events";
+import * as eventRepo from "../../apis/createEventRepo";
 
 interface CreateEventProps{
     onCreateEvent?: (event: Event) => void;
@@ -26,10 +27,21 @@ function CreateEvent({onCreateEvent}: CreateEventProps){
     const detailInput = useFormInput();
     const [details, setDetails] = useState<string[]>([]);
     const [formError, setFormError] = useState<string>("");
+    const [events, setEvents] = useState<Event[]>([]);
+    const latestEvent = events.length > 0 ? events[events.length - 1] : null;
+    const latestEventDate = latestEvent ? new Date(latestEvent.date).toLocaleDateString() : "";
   
     function deleteDetail(index: number){
             setDetails(details.filter((_, i) => i !==index));
     }
+
+    useEffect(() => {
+        async function fetchRecentEvent() {
+            const fetchedEvents = await eventRepo.fetchEvents();
+            setEvents(fetchedEvents);
+        }
+        fetchRecentEvent();
+    }, []);
     
     async function handleSubmit(e: React.FormEvent){
         e.preventDefault();
@@ -73,6 +85,9 @@ function CreateEvent({onCreateEvent}: CreateEventProps){
             details
         });
 
+        const updatedEventsList = await eventRepo.fetchEvents();
+        setEvents(updatedEventsList);
+
         name.setValue("");
         date.setValue("");
         location.setValue("");
@@ -102,7 +117,7 @@ function CreateEvent({onCreateEvent}: CreateEventProps){
                 
                 <label>
                     <strong>Event Details:</strong><br></br>
-                    <input value={detailInput.value} onChange={detailInput.onChange} />
+                    <input value={detailInput.value} onChange={detailInput.onChange} placeholder="eg. 6:00PM, bring drinks, wear a costume"/>
                 </label>
 
                 <button className="add-detail-button" type="button" onClick={() => {
@@ -128,6 +143,14 @@ function CreateEvent({onCreateEvent}: CreateEventProps){
                 <br></br>{formError && <p className="error-message">{formError}</p>}
 
                 <button className="create-event-button" type="submit">Create Event</button><br></br>
+            </div>
+
+            <div className="recent-event">
+                <h3>Recently Created Event: </h3>
+                {latestEvent ? (
+                    <p>{latestEvent.name} on {latestEventDate}</p>
+                ) : (<p>No events exist yet.</p>)
+                }
             </div>
 
             <div className="shared-counter">

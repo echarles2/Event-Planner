@@ -1,15 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChecklistForm } from './ChecklistForm';
 import { ChecklistSection } from './ChecklistSection';
 import type { Checklist } from "../../../../../shared/types/checklist";
 import type { Event } from '../../../../../shared/types/events';
 import { groupChecklistsByEvent } from "../services/checklistService";
 import * as EventsRepo from "../../apis/createEventRepo";
+import * as ChecklistRepo from "../../apis/checklistRepo";
 import './Checklist.css';
-import { v4 as uuidv4 } from 'uuid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClipboardList } from '@fortawesome/free-solid-svg-icons'
-import { useCounter } from "../../state/CounterContext";
 
 /**
  * Serves as the parent component for the Checklist feature, managing the 
@@ -20,10 +19,31 @@ import { useCounter } from "../../state/CounterContext";
  * repository, service, and component-level logic.
  */
 function ChecklistWrapper() {
-    const [checklists, setChecklists] = useState<Checklist[]>([]);
-    let events: Event[] = [];
-    EventsRepo.fetchEvents().then(res => {events =res;}) 
-    const { counter, increment } = useCounter();
+    const [checklists, setChecklists] = useState<Checklist[]>([]); 
+    useEffect(() => {
+        async function loadChecklists() {
+            try {
+                const data = await ChecklistRepo.fetchChecklists();
+                setChecklists(data);
+            } catch (error) {
+                console.error("Failed to fetch Checklists", error)
+            }
+        }
+        loadChecklists();
+    }, []);
+
+    const [events, setEvents] = useState<Event[]>([]);
+    useEffect(() => {
+        async function loadEvents() {
+            try {
+                const data = await EventsRepo.fetchEvents();
+                setEvents(data);
+            } catch (error) {
+                console.error("Failed to fetch events", error);
+            }
+        }
+        loadEvents();
+    }, []);
 
     // Group checklists by event using the service
     const grouped = groupChecklistsByEvent(checklists);
@@ -35,50 +55,75 @@ function ChecklistWrapper() {
         return event ? event.name : `Event ${key}`;
     }
 
+    // Helper to refresh checklist after adding new task
+    async function refreshChecklists() {
+        const updated = await ChecklistRepo.fetchChecklists();
+        setChecklists(updated);
+     }
+
     // Create a new checklist
-    function handleAddChecklist(eventId: string | undefined, item: string) {
-        const newItem: Checklist = {
-            id: uuidv4(),
-            eventId,
-            item,
-            completed: false,
-        };
-        setChecklists(prev => [...prev, newItem]);
-    }
+    async function handleAddChecklist(eventId: string | undefined, item: string) {
+        try {
+            const exisitngChecklist = checklists.find(c => c.eventId === eventId);
+            let checklistId: string;
+
+            if (!exisitngChecklist) {
+                const newChecklist = await ChecklistRepo.createChecklist(eventId);
+                checklistId = newChecklist.id;
+            } else {
+                checklistId =exisitngChecklist.id;
+            }
+
+            await ChecklistRepo.createChecklistItem(checklistId, item);
+            await refreshChecklists();
+        } catch (error) {
+            console.error("Failed to create new Checklist", error);
+        }
+    };
 
     // Add an item to an existing checklist group
-    function handleAddItem(groupKey: string, item: string) {
-        const eventId = groupKey === "personal" ? undefined : groupKey;
-        const newItem: Checklist = {
-            id: uuidv4(),
-            eventId,
-            item,
-            completed: false,
-        };
-        setChecklists(prev => [...prev, newItem]);
-    }
+    async function handleAddItem(
+        checklistId: string,
+        item: string
+    ) {
+        try {
+            await ChecklistRepo.createChecklistItem(checklistId, item);
+            await refreshChecklists();
+        } catch (error) {
+            console.error("Failed to create new checklist item", error);
+        }
+    };
 
     // Toggle an item's completed status
-    function handleToggleItem(id: string) {
-        setChecklists(prev =>
-            prev.map(c => (c.id === id ? { ...c, completed: !c.completed } : c))
-        );
-    }
+    async function handleToggleItem(id: string) {
+        try {
+            await ChecklistRepo.updateChecklistItem(id);
+            await refreshChecklists();
+        } catch (error) {
+            console.error("Failed to update checklist item", error);
+        }
+    };
 
     // Delete a single item
-    function handleDeleteItem(id: string) {
-        setChecklists(prev => prev.filter(c => c.id !== id));
-    }
+    async function handleDeleteItem(id: string) {
+        try {
+            await ChecklistRepo.deleteChecklistItem(id);
+            await refreshChecklists();
+        } catch (error) {
+            console.error("Failed to delete checklist item", error);
+        }
+    };
 
     // Removes all to-do items for that Event/Personal (to wipe that entire checklist section)
-    function handleDeleteChecklist(eventKey: string) {
-        setChecklists(prev =>
-            prev.filter(item => eventKey === "personal" 
-                ? item.eventId : item.eventId !== eventKey
-            )
-                //(item.eventId ?? "personal") !== eventKey)
-        );
-    }
+    async function handleDeleteChecklist(id: string) {
+        try {
+            await ChecklistRepo.deleteChecklist(id);
+            await refreshChecklists();
+        } catch (error) {
+            console.error("Failed to delete checklist", error);
+        }
+    };
+
     // Turns the grouped data (event name & its to-do items) into rendable structure
     const entries = Array.from(grouped.entries());
    
@@ -90,29 +135,25 @@ function ChecklistWrapper() {
                 </h2>
             <ChecklistForm
                 checklists={checklists}
+                events={events}
                 onAddChecklist={handleAddChecklist}
             />
             
-            {entries.map(entry => {
-                const eventKey = entry[0];
-                const items = entry[1];
+            {entries.map(([eventKey, value]) => {
+                const { checklistId, items } = value;
 
                 return (
                     <ChecklistSection
                         key={eventKey}
                         eventName={getEventName(eventKey)}
                         items={items}
-                        onAddItem={(item) => handleAddItem(eventKey, item)}
+                        onAddItem={(item) => handleAddItem(checklistId, item)}
                         onToggleItem={handleToggleItem}
                         onDeleteItem={handleDeleteItem}
-                        onDeleteChecklist={() => handleDeleteChecklist(eventKey)}
+                        onDeleteChecklist={() => handleDeleteChecklist(checklistId)}
                     />
                 )
             })}
-            <div className="shared-counter">
-                <span>Shared Counter: {counter}</span>
-                <button type="button" onClick={increment}>Increment</button>
-            </div>
         </div>
     );
 }
