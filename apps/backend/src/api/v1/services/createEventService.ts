@@ -13,7 +13,7 @@ export async function fetchAllEvents(): Promise<Event[]>{
     }));
 }
 
-export async function createEvent(event: Event): Promise<Event>{
+export async function createEvent(event: Omit<Event, "id">): Promise<Event>{
     if (event.name.trim().length < 3){
         throw new Error("Name must be at least 3 letters.");
     }

@@ -9,11 +9,12 @@ export const eventSchema: ObjectSchema = Joi.object({
         "string.max": "Name must be less than 30 characters",
         "string.empty": "Name cannot be empty"
     }),
-    date: Joi.date().required().messages({
-        "any.required": "Date is required"
+    date: Joi.string().isoDate().required().messages({
+        "any.required": "Date is required",
+        "string.isoDate": "Date must be a valid date"
     }),
-    location: Joi.string().max(5).optional().messages({
+    location: Joi.string().max(50).optional().messages({
         "string.max": "Location must be less than 50 characters"
     }),
-    details: Joi.string().optional()
+    details: Joi.array().items(Joi.string()).optional()
 });

@@ -65,7 +65,6 @@ function CreateEvent({onCreateEvent}: CreateEventProps){
         }
 
         const createdEvent = await createNewEvent({
-            id: Date.now().toString(),
             name: name.value,
             date: date.value,
             location: location.value || undefined,
@@ -77,13 +76,7 @@ function CreateEvent({onCreateEvent}: CreateEventProps){
             return;
         }
 
-        onCreateEvent?.({
-            id: Date.now().toString(),
-            name: name.value,
-            date: date.value,
-            location: location.value || undefined,
-            details
-        });
+        onCreateEvent?.(createdEvent.data);
 
         const updatedEventsList = await eventRepo.fetchEvents();
         setEvents(updatedEventsList);
