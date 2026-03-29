@@ -1,0 +1,46 @@
+generator client {
+  provider               = "prisma-client"
+  output                 = "../generated/prisma"
+  moduleFormat           = "esm"
+  generatedFileExtension = "ts"
+  importFileExtension    = "js"
+}
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model AvailabilityEntry {
+  id     String             @id @default(cuid())
+  date    DateTime           @unique
+  status AvailabilityStatus
+}
+
+model Event {
+  id        String     @id @default(uuid())
+  name      String
+  date      DateTime
+  details   String?
+  location  String?
+  checklist Checklist?
+}
+
+model Checklist {
+  id      String          @id @default(uuid())
+  eventId String?         @unique
+  event   Event?          @relation(fields: [eventId], references: [id])
+  items   ChecklistItem[]
+}
+
+model ChecklistItem {
+  id          String    @id @default(uuid())
+  checklistId String
+  item        String
+  completed   Boolean   @default(false)
+  checklist   Checklist @relation(fields: [checklistId], references: [id])
+}
+
+enum AvailabilityStatus {
+  available
+  unavailable
+}
