@@ -28,6 +28,7 @@ app.use(express.json());
 // see https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS
 app.use(cors(corsOptions));
 
+// add clerk middleware
 app.use(clerkMiddleware());
 
 // invoke swagger middleware for serving docs in /api-docs
