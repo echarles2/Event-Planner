@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import "./Header.css"
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/clerk-react'
 
 function Header() {
     return(
@@ -25,6 +26,14 @@ function Header() {
                         <NavLink to="/calendar">
                             My Events
                         </NavLink>
+
+                        <SignedOut>
+                            <SignInButton />
+                        </SignedOut>
+                        
+                        <SignedIn>
+                            <UserButton />
+                        </SignedIn>
                     </div>
                 </nav>
             </header>
