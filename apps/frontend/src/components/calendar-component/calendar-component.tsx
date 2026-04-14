@@ -13,24 +13,49 @@ import { AvailabilityRepository } from "../../apis/availabilityRepo";
 import { useFormInput } from "../../hooks/useFormHook";
 import { AvailabilityService } from "../services/availabilityService";
 import { Calendar } from "primereact/calendar";
+import { useAuth } from "@clerk/clerk-react";
+import type { Event } from "../../../../../shared/types/events";
+import * as eventRepo from "../../apis/createEventRepo";
 
 export default function CalendarComponent() {
   const { counter, increment } = useCounter();
+  const { getToken } = useAuth();
 
-  const repo = useMemo(() => new AvailabilityRepository(), []);
+  const repo = useMemo(() => new AvailabilityRepository(getToken), [getToken]);
   const service = useMemo(() => new AvailabilityService(repo), [repo]);
   const [availability, setAvailability] = useState<AvailabilityEntry[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
   const dayInput = useFormInput();
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  const [ hoveredDate, setHoveredDate] = useState<string | null>(null);
   const [visibleMonth, setVisibleMonth] = useState<Date>(new Date());
 
   useEffect(() => {
     async function load() {
-      const data = await repo.getAll();
-      setAvailability(data);
+      const availabilityData = await repo.getAll();
+      setAvailability(availabilityData);
+
+      const eventData = await eventRepo.fetchEvents();
+      setEvents(eventData);
     }
     load();
   }, [repo]);
+
+  const eventsByDate = useMemo(() => {
+    const grouped: Record<string, Event[]> = {};
+
+    for (const event of events) {
+      const eventDate = new Date(event.date);
+      const key = eventDate.toISOString().split("T")[0];
+
+      if (!grouped[key]) {
+        grouped[key] = [];
+      }
+      grouped[key].push(event);
+    }
+    return grouped;
+  }, [events]);
+
 
   async function handleSave(date: string, status: AvailabilityStatus) {
     const result = await service.saveDayStatus(date, status);
@@ -199,10 +224,37 @@ async function handleSubmit(e: React.FormEvent) {
 
                 const cellDate = `${visibleMonth.getFullYear()}-${String(visibleMonth.getMonth() + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
                 const status = availabilityByDate[cellDate];
+                const dateEvents = eventsByDate[cellDate] || [];
+                const hasEvents = dateEvents.length > 0;
+
+                let summaryText = "";
+
+                if (status && hasEvents) {
+                  const eventLabel = dateEvents.length === 1 ? "Event" : "Events";
+                  summaryText = `${status} + ${dateEvents.length} ${eventLabel}`;
+                } else if (status) {
+                  summaryText = status;
+                } else if (hasEvents) {
+                  const eventLabel = dateEvents.length === 1 ? "Event" : "Events";
+                  summaryText = `${dateEvents.length} ${eventLabel}`;
+                }
 
                 return (
                   <td key={day}>
-                    <button
+                    <div
+                      className="calendar-day-wrapper"
+                      onMouseEnter={() => {
+                        if (hasEvents) {
+                          setHoveredDate(cellDate);
+                        }
+                      }}
+                      onMouseLeave={() => {
+                        if (hoveredDate === cellDate) {
+                          setHoveredDate(null);
+                        }
+                      }}
+                    >
+                      <button
                         type="button"
                         onClick={() =>
                           setSelectedDate(
@@ -214,23 +266,40 @@ async function handleSubmit(e: React.FormEvent) {
                           )
                         }
                       >
-                      <span className="day-number">{day}</span>
+                        <span className="day-number">{day}</span>
 
-                      {status && (
-                        <div className="day-tag">
-                          <span>{status}</span>
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                removeAvailability(cellDate);
-                              }}
-                            >
-                            x
-                            </button>
+                        {summaryText && (
+                          <div className="day-tag">
+                            <span>{summaryText}</span>
+                            {status && (
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  removeAvailability(cellDate);
+                                }}
+                              >
+                                x
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </button>
+
+                      {hasEvents && hoveredDate === cellDate && (
+                        <div className="event-hover-card">
+                          <h4>Events</h4>
+                          <ul>
+                            {dateEvents.map((event) => (
+                              <li key={event.id}>
+                                <strong>{event.name}</strong>
+                                {event.location && <div>{event.location}</div>}
+                              </li>
+                            ))}
+                          </ul>
                         </div>
                       )}
-                    </button>
+                    </div>
                   </td>
                 );
               })}

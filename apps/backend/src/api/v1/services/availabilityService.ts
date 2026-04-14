@@ -1,8 +1,9 @@
 import prisma from "../../../../prisma/client.js";
 import { AvailabilityEntry } from "../../../../generated/prisma/client.js";
 
-export const getAllAvailability = async (): Promise<AvailabilityEntry[]> => {
+export const getAllAvailability = async (userId: string): Promise<AvailabilityEntry[]> => {
     return prisma.availabilityEntry.findMany({
+        where: { userId },
         orderBy: {
             date: "asc"
         }
@@ -10,11 +11,12 @@ export const getAllAvailability = async (): Promise<AvailabilityEntry[]> => {
 };
 
 export const saveAvailability = async (
+    userId: string,
     date: Date,
     status: "available" | "unavailable"
 ): Promise<AvailabilityEntry> => {
     const existing = await prisma.availabilityEntry.findFirst({
-        where: { date }
+        where: { userId, date }
     });
 
     if (existing) {
@@ -25,13 +27,13 @@ export const saveAvailability = async (
     }
 
     return prisma.availabilityEntry.create({
-        data: { date, status }
+        data: { userId, date, status }
     });
 };
 
-export const deleteAvailabilityByDate = async (date: Date): Promise<AvailabilityEntry | null> => {
+export const deleteAvailabilityByDate = async (userId: string, date: Date): Promise<AvailabilityEntry | null> => {
     const existing = await prisma.availabilityEntry.findFirst({
-        where: { date }
+        where: { userId, date }
     });
 
     if (!existing) {
