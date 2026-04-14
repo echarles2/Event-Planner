@@ -12,8 +12,12 @@ datasource db {
 
 model AvailabilityEntry {
   id     String             @id @default(cuid())
-  date    DateTime           @unique
+  date    DateTime
   status AvailabilityStatus
+  userId String
+  user   User               @relation(fields: [userId], references: [id])
+
+  @@unique([userId, date])
 }
 
 model Event {
@@ -22,6 +26,8 @@ model Event {
   date      DateTime
   details   String?
   location  String?
+  userId    String
+  user      User       @relation(fields: [userId], references: [id])
   checklist Checklist?
 }
 
@@ -29,6 +35,8 @@ model Checklist {
   id      String          @id @default(uuid())
   eventId String?         @unique
   event   Event?          @relation(fields: [eventId], references: [id])
+  userId String
+  user   User            @relation(fields: [userId], references: [id])
   items   ChecklistItem[]
 }
 
@@ -43,4 +51,12 @@ model ChecklistItem {
 enum AvailabilityStatus {
   available
   unavailable
+}
+
+model User {
+  id          String              @id @default(uuid())
+  clerkUserId String              @unique
+  events       Event[]
+  availability AvailabilityEntry[]
+  checklists   Checklist[]
 }
