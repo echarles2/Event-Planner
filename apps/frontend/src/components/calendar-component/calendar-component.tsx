@@ -19,7 +19,7 @@ import * as eventRepo from "../../apis/createEventRepo";
 
 export default function CalendarComponent() {
   const { counter, increment } = useCounter();
-  const { getToken, isSignedIn } = useAuth();
+  const { getToken } = useAuth();
 
   const repo = useMemo(() => new AvailabilityRepository(getToken), [getToken]);
   const service = useMemo(() => new AvailabilityService(repo), [repo]);
