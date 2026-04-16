@@ -2,8 +2,9 @@
 import type {Event} from "../../../../../../shared/types/events.js";
 import prisma from "../../../../prisma/client.js";
 
-export async function fetchAllEvents(): Promise<Event[]>{
-    const events = await prisma.event.findMany();
+
+export async function fetchAllEvents(userId: string): Promise<Event[]>{
+    const events = await prisma.event.findMany({where: {userId}});
     return events.map (e => ({
         id: e.id,
         name: e.name,
@@ -13,7 +14,7 @@ export async function fetchAllEvents(): Promise<Event[]>{
     }));
 }
 
-export async function createEvent(event: Omit<Event, "id">): Promise<Event>{
+export async function createEvent(event: Omit<Event, "id">, userId: string): Promise<Event>{
     if (event.name.trim().length < 3){
         throw new Error("Name must be at least 3 letters.");
     }
@@ -39,7 +40,8 @@ export async function createEvent(event: Omit<Event, "id">): Promise<Event>{
             name: event.name,
             date: new Date(event.date),
             location: event.location,
-            details: JSON.stringify(event.details)
+            details: JSON.stringify(event.details),
+            userId
         }
     });
 
