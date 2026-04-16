@@ -9,7 +9,7 @@ import setupSwagger from "../config/swagger.js";
 import errorHandler from "./api/v1/middleware/errorHandler.js";
 
 import checklistRoutes from "./api/v1/routes/checklistRoutes.js";
-import createEventRoutes from "./api/v1/routes/createEventRoute.js";
+import createEventRoutes from "./api/v1/routes/eventRoutes.js";
 import availabilityRoutes from "./api/v1/routes/availabilityRoutes.js";
 
 // initialize express application
