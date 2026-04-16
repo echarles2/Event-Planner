@@ -92,3 +92,11 @@ input{
     padding-top: 0.5rem;
     border-radius: 8px;
 }
+
+.not-signed-in{
+    text-align: center;
+    background-color: #b1dff5;
+    border-radius: 8px;
+    padding-top: 0.3rem;
+    padding-bottom: 1.5rem;
+}

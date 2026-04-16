@@ -15,7 +15,7 @@ import { AvailabilityService } from "../services/availabilityService";
 import { Calendar } from "primereact/calendar";
 import { useAuth } from "@clerk/clerk-react";
 import type { Event } from "../../../../../shared/types/events";
-import * as eventRepo from "../../apis/createEventRepo";
+import * as eventRepo from "../../apis/eventRepo";
 
 export default function CalendarComponent() {
   const { counter, increment } = useCounter();
@@ -32,10 +32,15 @@ export default function CalendarComponent() {
 
   useEffect(() => {
     async function load() {
+      const token = await getToken();
+      if (!token){
+        return;
+      }
+      
       const availabilityData = await repo.getAll();
       setAvailability(availabilityData);
 
-      const eventData = await eventRepo.fetchEvents();
+      const eventData = await eventRepo.fetchEvents(token);
       setEvents(eventData);
     }
     load();
