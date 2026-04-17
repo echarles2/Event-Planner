@@ -71,9 +71,7 @@ export async function deleteChecklist(
     const response: Response = await fetch(`${API_BASE}/checklists/${id}`, 
         {
             method: "DELETE",
-            headers: {
-            Authorization: `Bearer ${token}`
-        }
+            headers: { Authorization: `Bearer ${token}` }
     });
 
         if(!response.ok) {
@@ -90,13 +88,17 @@ export async function deleteChecklist(
  */
 export async function createChecklistItem(
     checklistId: string,
-    item: string
+    item: string,
+    token?: string|null
 ): Promise<ChecklistItem> {
     const response: Response = await fetch(`${API_BASE}/checklist-items`,
     {
         method: "POST",
         body: JSON.stringify({ checklistId, item }),
-        headers: { "Content-Type": "application/json" }
+        headers: { 
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        }
     });
 
     if(!response.ok) {
@@ -114,11 +116,13 @@ export async function createChecklistItem(
  * @throws - Error if the checklist item can't be updated
  */
 export async function updateChecklistItem(
-    id: string
+    id: string,
+    token?: string|null
 ): Promise<ChecklistItem> {
     const response: Response = await fetch(`${API_BASE}/checklist-items/${id}`,
     {
         method: "PATCH",
+        headers: { Authorization: `Bearer ${token}` }
     });
 
     if(!response.ok) {
@@ -134,10 +138,14 @@ export async function updateChecklistItem(
  * @param id - the ID of the checklist item to delete
  * @throws - Error if the checklist item can't be deleted
  */
-export async function deleteChecklistItem(id: string): Promise<void> {
+export async function deleteChecklistItem(
+    id: string, 
+    token?: string|null
+): Promise<void> {
     const response: Response = await fetch(`${API_BASE}/checklist-items/${id}`, 
     {
         method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` }
     });
 
     if(!response.ok) {

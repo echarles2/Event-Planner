@@ -92,16 +92,18 @@ export const updateChecklistItem = async (
  * @param id - the ID of the checklist to be deleted
  */
 export const deleteChecklist = async (
-    userId: string, 
+    userId: string,
     id: string
 ): Promise<void> => {
     const checklist = await prisma.checklist.findUnique({ where: { id } });
-    if (!checklist) throw new Error(`Checklist with ID ${id} not found`);
+    if (!checklist) 
+        throw new Error(`Checklist with ID ${id} not found`);
+    if (checklist.userId !== userId) 
+        throw new Error("Unauthorized!");
 
     await prisma.checklistItem.deleteMany({ 
         where: { 
-            userId: userId,
-            checklistId: id 
+            checklistId: id
         } 
     });
     await prisma.checklist.delete({ where: { id } });

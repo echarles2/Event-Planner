@@ -21,21 +21,22 @@ import { useAuth, SignInButton } from "@clerk/clerk-react";
  */
 function ChecklistWrapper() {
     const [checklists, setChecklists] = useState<Checklist[]>([]);
-    const { isSignedIn } = useAuth();
+    const { getToken, isSignedIn } = useAuth();
 
     useEffect(() => {
         if (!isSignedIn) return;
 
         async function loadChecklists() {
             try {
-                const data = await ChecklistRepo.fetchChecklists();
+                const token = await getToken();
+                const data = await ChecklistRepo.fetchChecklists(token);
                 setChecklists(data);
             } catch (error) {
                 console.error("Failed to fetch Checklists", error)
             }
         }
         loadChecklists();
-    }, [isSignedIn]);
+    }, [getToken, isSignedIn]);
 
     const [events, setEvents] = useState<Event[]>([]);
     useEffect(() => {
@@ -64,24 +65,26 @@ function ChecklistWrapper() {
 
     // Helper to refresh checklist after adding new task
     async function refreshChecklists() {
-        const updated = await ChecklistRepo.fetchChecklists();
+        const token = await getToken();
+        const updated = await ChecklistRepo.fetchChecklists(token);
         setChecklists(updated);
-     }
+    }
 
     // Create a new checklist
     async function handleAddChecklist(eventId: string | undefined, item: string) {
         try {
+            const token = await getToken();
             const exisitngChecklist = checklists.find(c => c.eventId === eventId);
             let checklistId: string;
 
             if (!exisitngChecklist) {
-                const newChecklist = await ChecklistRepo.createChecklist(eventId);
+                const newChecklist = await ChecklistRepo.createChecklist(token, eventId);
                 checklistId = newChecklist.id;
             } else {
                 checklistId = exisitngChecklist.id;
             }
 
-            await ChecklistRepo.createChecklistItem(checklistId, item);
+            await ChecklistRepo.createChecklistItem(checklistId, item, token);
             await refreshChecklists();
         } catch (error) {
             console.error("Failed to create new Checklist", error);
@@ -94,7 +97,8 @@ function ChecklistWrapper() {
         item: string
     ) {
         try {
-            await ChecklistRepo.createChecklistItem(checklistId, item);
+            const token = await getToken();
+            await ChecklistRepo.createChecklistItem(checklistId, item, token);
             await refreshChecklists();
         } catch (error) {
             console.error("Failed to create new checklist item", error);
@@ -104,7 +108,8 @@ function ChecklistWrapper() {
     // Toggle an item's completed status
     async function handleToggleItem(id: string) {
         try {
-            await ChecklistRepo.updateChecklistItem(id);
+            const token = await getToken();
+            await ChecklistRepo.updateChecklistItem(id, token);
             await refreshChecklists();
         } catch (error) {
             console.error("Failed to update checklist item", error);
@@ -114,7 +119,8 @@ function ChecklistWrapper() {
     // Delete a single item
     async function handleDeleteItem(id: string) {
         try {
-            await ChecklistRepo.deleteChecklistItem(id);
+            const token = await getToken();
+            await ChecklistRepo.deleteChecklistItem(id, token);
             await refreshChecklists();
         } catch (error) {
             console.error("Failed to delete checklist item", error);
@@ -124,7 +130,8 @@ function ChecklistWrapper() {
     // Removes all to-do items for that Event/Personal (to wipe that entire checklist section)
     async function handleDeleteChecklist(id: string) {
         try {
-            await ChecklistRepo.deleteChecklist(id);
+            const token = await getToken();
+            await ChecklistRepo.deleteChecklist(id, token);
             await refreshChecklists();
         } catch (error) {
             console.error("Failed to delete checklist", error);

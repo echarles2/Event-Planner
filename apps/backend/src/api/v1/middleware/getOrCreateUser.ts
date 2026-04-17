@@ -13,9 +13,9 @@ export const getOrCreateUser = async(
         if (!userId) {
             throw new Error("User should exist here")
         }
-        await checkAppUser(userId)
+        const appUser = await checkAppUser(userId);
 
-        req.userId = userId;
+        req.userId = appUser.id;
         next();
     } catch (error) {
         next(error)
