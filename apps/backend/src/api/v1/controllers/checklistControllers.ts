@@ -4,12 +4,18 @@ import { successResponse } from "../models/responseModel.js";
 import { checklistItemSchema } from "../validations/checklistValidation.js";
 
 export const getAllChecklists = async (
-    _req: Request,
+    req: Request,
     res: Response,
     next: NextFunction
 ): Promise<void> => {
     try {
-        const checklists = await checklistService.getAllChecklists();
+        const userId = req.userId;
+        if(!userId) {
+            res.status(401).json({ message: "Unauthorized user!" });
+            return;
+        }
+
+        const checklists = await checklistService.getAllChecklists(userId);
         res.status(200).json(
             successResponse(checklists, "Checklists retrieved successfully")
         );
@@ -24,7 +30,17 @@ export const createChecklist = async(
     next: NextFunction
 ): Promise<void> => {
     try {
-        const newChecklist = await checklistService.createChecklist(req.body);
+        const userId = req.userId;
+        if(!userId) {
+            res.status(401).json({ message: "Unauthorized user!" });
+            return;
+        }
+
+        const newChecklist = await checklistService.createChecklist(
+            userId,
+            req.body
+        );
+        
         res.status(201)
             .json(successResponse(newChecklist, "Checklist created succesfully"));
     } catch(error) {
@@ -73,7 +89,16 @@ export const deleteChecklist = async(
     next: NextFunction
 ): Promise<void> => {
     try {
-        await checklistService.deleteChecklist(req.params.id as string);
+        const userId = req.userId;
+        if(!userId) {
+            res.status(401).json({ message: "Unauthorized user!" });
+            return;
+        }
+
+        await checklistService.deleteChecklist(
+            userId,
+            req.params.id as string
+        );
 
         res.status(200)
             .json(successResponse(null, "Checklist deleted succesfully"));
