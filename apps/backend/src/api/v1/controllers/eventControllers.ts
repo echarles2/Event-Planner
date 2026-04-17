@@ -1,16 +1,16 @@
 import { Request, Response, NextFunction } from "express";
-import * as createEventService from "../services/eventService.js";
+import * as createEventService from "../services/eventServices.js";
 import { successResponse } from "../models/responseModel.js";
 import { getAuth } from "@clerk/express";
 import { checkAppUser } from "../services/userService.js";
 
 export const getAllEvents = async(
-    _req: Request,
+    req: Request,
     res: Response,
     next: NextFunction
 ): Promise<void> => {
     try{
-        const {userId: clerkUserId} = getAuth(_req);
+        const {userId: clerkUserId} = getAuth(req);
 
         if (!clerkUserId){
             res.status(401).json({error: "Unauthorized"});

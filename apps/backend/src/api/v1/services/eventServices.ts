@@ -1,4 +1,3 @@
-
 import type {Event} from "../../../../../../shared/types/events.js";
 import prisma from "../../../../prisma/client.js";
 
