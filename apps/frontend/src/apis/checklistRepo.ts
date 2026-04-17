@@ -11,8 +11,17 @@ const API_BASE = `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
  * Get all Checklists
  * @returns - All Checklist data
  */
-export async function fetchChecklists(): Promise<Checklist[]> {
-    const response: Response = await fetch(`${API_BASE}/checklists`);
+export async function fetchChecklists(
+    token?: string|null
+): Promise<Checklist[]> {
+    const response: Response = await fetch(
+        `${API_BASE}/checklists`,
+        token? {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            } 
+        } : undefined
+    );
 
     if (!response.ok) {
         throw new Error("Failed to fetch Checklists")
@@ -29,13 +38,17 @@ export async function fetchChecklists(): Promise<Checklist[]> {
  * @throws - Error if the checklist can't be created
  */
 export async function createChecklist(
+    token?: string|null,
     eventId?: string
 ): Promise<Checklist> {
     const response: Response = await fetch(`${API_BASE}/checklists`, 
     {
         method: "POST",
         body: JSON.stringify({ eventId }),
-        headers: { "Content-Type": "application/json" }
+        headers: { 
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        }
     });
 
     if(!response.ok) {
@@ -51,11 +64,17 @@ export async function createChecklist(
  * @param id - The ID of the checklist to be removed
  * @throws - Error if the checklist can't be deleted
  */
-export async function deleteChecklist(id: string): Promise<void> {
+export async function deleteChecklist(
+    id: string,
+    token?: string|null,
+): Promise<void> {
     const response: Response = await fetch(`${API_BASE}/checklists/${id}`, 
         {
             method: "DELETE",
-        });
+            headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
 
         if(!response.ok) {
             throw new Error(`Failed to delete checklist with ${id}`);
