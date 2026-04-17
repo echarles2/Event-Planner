@@ -9,6 +9,7 @@ import * as ChecklistRepo from "../../apis/checklistRepo";
 import './Checklist.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClipboardList } from '@fortawesome/free-solid-svg-icons'
+import { useAuth, SignInButton } from "@clerk/clerk-react";
 
 /**
  * Serves as the parent component for the Checklist feature, managing the 
@@ -19,8 +20,12 @@ import { faClipboardList } from '@fortawesome/free-solid-svg-icons'
  * repository, service, and component-level logic.
  */
 function ChecklistWrapper() {
-    const [checklists, setChecklists] = useState<Checklist[]>([]); 
+    const [checklists, setChecklists] = useState<Checklist[]>([]);
+    const { isSignedIn } = useAuth();
+
     useEffect(() => {
+        if (!isSignedIn) return;
+
         async function loadChecklists() {
             try {
                 const data = await ChecklistRepo.fetchChecklists();
@@ -30,10 +35,12 @@ function ChecklistWrapper() {
             }
         }
         loadChecklists();
-    }, []);
+    }, [isSignedIn]);
 
     const [events, setEvents] = useState<Event[]>([]);
     useEffect(() => {
+        if (!isSignedIn) return;
+
         async function loadEvents() {
             try {
                 const data = await EventsRepo.fetchEvents();
@@ -43,7 +50,7 @@ function ChecklistWrapper() {
             }
         }
         loadEvents();
-    }, []);
+    }, [isSignedIn]);
 
     // Group checklists by event using the service
     const grouped = groupChecklistsByEvent(checklists);
@@ -71,7 +78,7 @@ function ChecklistWrapper() {
                 const newChecklist = await ChecklistRepo.createChecklist(eventId);
                 checklistId = newChecklist.id;
             } else {
-                checklistId =exisitngChecklist.id;
+                checklistId = exisitngChecklist.id;
             }
 
             await ChecklistRepo.createChecklistItem(checklistId, item);
@@ -123,6 +130,19 @@ function ChecklistWrapper() {
             console.error("Failed to delete checklist", error);
         }
     };
+
+    if(!isSignedIn) {
+        return (
+            <div className='checklist-wrapper'>
+                <h2>
+                    <FontAwesomeIcon icon={faClipboardList} />
+                    Checklist
+                </h2>
+                <p>Please log in to use checklist</p>
+                <SignInButton />
+            </div>
+        )
+    }
 
     // Turns the grouped data (event name & its to-do items) into rendable structure
     const entries = Array.from(grouped.entries());
