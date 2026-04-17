@@ -7,7 +7,7 @@ const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
 const EVENT_ENDPOINT = "/event/latest"
 const CREATE_EVENT_ENDPOINT = "/create-event"
 
-export async function fetchEvents(token: string): Promise<Event[]> {
+export async function fetchEvents(token?: string|null): Promise<Event[]> {
     const eventResponse: Response = await fetch(
         `${BASE_URL}${EVENT_ENDPOINT}`,
         {
@@ -25,7 +25,7 @@ export async function fetchEvents(token: string): Promise<Event[]> {
     return json.data;
 }
 
-export async function createEvent(event: Omit<Event, "id">, token: string) {
+export async function createEvent(event: Omit<Event, "id">, token?: string|null) {
     const eventResponse: Response = await fetch(
         `${BASE_URL}${CREATE_EVENT_ENDPOINT}`,
         {
