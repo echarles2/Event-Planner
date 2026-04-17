@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import * as createEventService from "../services/eventServices.js";
+import * as createEventService from "../services/eventService.js";
 import { successResponse } from "../models/responseModel.js";
 import { getAuth } from "@clerk/express";
 import { checkAppUser } from "../services/userService.js";
