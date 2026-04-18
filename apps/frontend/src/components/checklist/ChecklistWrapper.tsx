@@ -4,7 +4,7 @@ import { ChecklistSection } from './ChecklistSection';
 import type { Checklist } from "../../../../../shared/types/checklist";
 import type { Event } from '../../../../../shared/types/events';
 import { groupChecklistsByEvent } from "../services/checklistService";
-import * as EventsRepo from "../../apis/createEventRepo";
+import * as EventsRepo from "../../apis/eventRepo";
 import * as ChecklistRepo from "../../apis/checklistRepo";
 import './Checklist.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

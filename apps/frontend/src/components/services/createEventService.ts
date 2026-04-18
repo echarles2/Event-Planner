@@ -1,4 +1,4 @@
-import * as eventRepo from "../../apis/createEventRepo";
+import * as eventRepo from "../../apis/eventRepo";
 import type { Event } from "../../../../../shared/types/events";
 
 export interface Status{
@@ -6,7 +6,7 @@ export interface Status{
     success: boolean;
 }
 
-export async function createNewEvent(event: Omit<Event, "id">)
+export async function createNewEvent(event: Omit<Event, "id">, token: string)
 : Promise<{success:true; data: Event} | {success: false; error: string}>{
     if (event.name.trim().length < 3){
         return{
@@ -15,7 +15,7 @@ export async function createNewEvent(event: Omit<Event, "id">)
         }
     }
 
-    const createdEvent = await eventRepo.createEvent(event);
+    const createdEvent = await eventRepo.createEvent(event, token);
     return{
         success: true,
         data: createdEvent

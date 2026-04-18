@@ -13,7 +13,8 @@ import { useFormInput } from "../../hooks/useFormHook";
 import { createNewEvent } from "../services/createEventService";
 import { useCounter } from "../../state/CounterContext";
 import type { Event } from "../../../../../shared/types/events";
-import * as eventRepo from "../../apis/createEventRepo";
+import * as eventRepo from "../../apis/eventRepo";
+import { useAuth, SignInButton } from "@clerk/clerk-react";
 
 interface CreateEventProps{
     onCreateEvent?: (event: Event) => void;
@@ -30,21 +31,43 @@ function CreateEvent({onCreateEvent}: CreateEventProps){
     const [events, setEvents] = useState<Event[]>([]);
     const latestEvent = events.length > 0 ? events[events.length - 1] : null;
     const latestEventDate = latestEvent ? new Date(latestEvent.date).toLocaleDateString() : "";
-  
+    const {getToken, isSignedIn} = useAuth();
+
     function deleteDetail(index: number){
             setDetails(details.filter((_, i) => i !==index));
     }
 
+    async function getAuthToken(): Promise<string>{
+        const token = await getToken();
+        if (!token){
+            throw new Error("Authentication error.");
+        }
+        return token;
+    }
+
     useEffect(() => {
+        if (!isSignedIn){
+            return;
+        }
+
         async function fetchRecentEvent() {
-            const fetchedEvents = await eventRepo.fetchEvents();
+            const token = await getToken();
+            if (!token){
+                throw new Error("Authentication error.");
+            }
+
+            const fetchedEvents = await eventRepo.fetchEvents(token);
             setEvents(fetchedEvents);
         }
         fetchRecentEvent();
-    }, []);
+    }, [isSignedIn]);
     
     async function handleSubmit(e: React.FormEvent){
         e.preventDefault();
+
+        if (!isSignedIn){
+            return;
+        }
 
         name.setError("");
         date.setError("");
@@ -64,12 +87,14 @@ function CreateEvent({onCreateEvent}: CreateEventProps){
             return;
         }
 
+        const token = await getAuthToken();
+
         const createdEvent = await createNewEvent({
             name: name.value,
             date: date.value,
             location: location.value || undefined,
             details
-        });
+        }, token);
 
         if (!createdEvent.success){
             setFormError(createdEvent.error || "Error has occurred.");
@@ -78,7 +103,7 @@ function CreateEvent({onCreateEvent}: CreateEventProps){
 
         onCreateEvent?.(createdEvent.data);
 
-        const updatedEventsList = await eventRepo.fetchEvents();
+        const updatedEventsList = await eventRepo.fetchEvents(token);
         setEvents(updatedEventsList);
 
         name.setValue("");
@@ -88,6 +113,19 @@ function CreateEvent({onCreateEvent}: CreateEventProps){
         setDetails([]);
 
         alert(`${name.value} has been successfully created!`);
+    }
+    if (!isSignedIn){
+        return(
+            <div className="not-signed-in">
+                <h2>Create Your Event!</h2>
+                <p>
+                    <SignInButton mode="modal">
+                        <span style={{color: "blue", textDecoration: "underline", cursor: "pointer"}}>Sign in</span>
+                    </SignInButton>
+                    {" "}to create new events and view recent events.
+                </p>
+            </div>
+        );
     }
     return(
         <form onSubmit={handleSubmit}>

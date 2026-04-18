@@ -1,14 +1,58 @@
 # Event-Planner
 A fullstack application for planning events with your friends.
 
-Project Team: Ethan Charles, Julia Dimayuga, Lalaine Balmediano
+## Project Team  
+Ethan Charles, Julia Dimayuga, Lalaine Balmediano
 
-Project General Description: The event-planner is a management tool designed for users to host events, share invites and collective calendars. This app is intended to make the planning of social gatherings simpler by allowing the participants view everyone's availabilities.
+## Project General Description  
+The event-planner is a management tool designed for users to host events, share invites and collective calendars. This app is intended to make the planning of social gatherings simpler by allowing the participants view everyone's availabilities.
 
-User Stories:
-As a user, I want to be able to create events, so that I can invite and share them with others.  
-As a user, I want to see when my friends are busy, without the hassle of reaching out.  
-As a user, I want to create an account, so I can manage my own events and view past & upcoming invitations.  
+## User Stories  
+- As a user, I want to be able to create events, so that I can invite and share them with others.  
+- As a user, I want to see when my friends are busy, without the hassle of reaching out.  
+- As a user, I want to create an account, so I can manage my own events and view past & upcoming invitations. 
+
+## Local Setup
+1. Clone the respository.  
+    i) Copy the GitHub repository link.  
+
+    ii) Open a terminal and enter the command `git clone <repository_url>`.
+
+2. Install dependencies.  
+    i) Open a new terminal and navigate to the backend directory.  
+        - (eg. `cd Event-Planner\apps\backend`)  
+          
+    ii) Run `npm install`.  
+
+    iii) Open a new terminal and navigate to the frontend directory.  
+        - (eg. `cd Event-Planner\apps\frontend`)  
+          
+    iv) Run `npm install`.  
+
+3. Set up the environment variables.  
+    i) In the backend, create a .env file.  
+
+    ii) Configure the following:  
+        - `PORT=`  
+        - `FRONTEND_URL=`  
+        - `DATABASE_URL=`  
+        - `CLERK_PUBLISHABLE_KEY=`  
+        - `CLERK_SECRET_KEY=`  
+          
+    iii) In the frontend, create a .env file.  
+
+    iv) Configure the following:  
+        - `VITE_API_BASE_URL=`  
+        - `VITE_CLERK_PUBLISHABLE_KEY=`  
+          
+4. Set up Prisma.  
+    i) From the backend terminal, run `npx prisma migrate dev`.  
+
+5. Start the servers.  
+    i) From the backend terminal, run `npm run start`.  
+    
+    ii) From the frontend terminal, run `npm run dev`.  
+        - `Ctrl + Click` the link in the frontend terminal to access the application.  
 
 ## Sprint 1
 G.1: Organize your group- Entire team  
@@ -61,15 +105,15 @@ Checklist Data - Lalaine
 Event Data - Julia  
 Availability Data - Ethan  
 
-I.3: New / Refactored Component(s) 
+I.3: New / Refactored Component(s)  
 My Checklist Refactor - Lalaine  
 Create Event Refactor - Julia  
 Calendar Refactor - Ethan    
 
-I.4: Architectural Layout Document
+I.4: Architectural Layout Document  
 My Checklist Architecture Documentation - Lalaine  
 Create Event Architecture Documentation - Julia  
-Availability/Calendar Architecture Documentation - Ethan 
+Availability/Calendar Architecture Documentation - Ethan  
 
 ## Sprint 4  
 T.1: Back-end App Initialization - Julia  
@@ -96,3 +140,20 @@ I.4: Application State Persistence
 Recently Created Events Data Persistence - Julia  
 Checklist Data Persistence - Lalaine  
 Availability/Calendar Data Persistence - Ethan  
+
+## Sprint 5  
+T.1: Clerk Auth Setup - Lalaine  
+T.2: Team Vercel Account/Management - Ethan  
+T.3: Back-end User Management - Ethan  
+T.4: User Login/Registration - Lalaine  
+T.5: Local Setup Instructions - Julia  
+
+I.1: Custom User-Associated Data and Session Management  
+Create Event User-Associated Data and Session Management- Julia  
+Checklist User-Associated Data and Session Management - Lalaine  
+Calendar/Availability User-Associated Data and Session Management - Ethan  
+
+I.2: Project Retrospective  
+LB Project Retrospective Document - Lalaine  
+EC Project Retrospective Document - Ethan  
+JD Project Retrospective Document - Julia  
