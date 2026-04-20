@@ -2,13 +2,14 @@ import express, {Express} from "express";
 import morgan from "morgan";
 import cors from "cors";
 import dotenv from "dotenv";
+import { clerkMiddleware } from "@clerk/express";
 
 import corsOptions from "../config/cors.js";
 import setupSwagger from "../config/swagger.js";
 import errorHandler from "./api/v1/middleware/errorHandler.js";
 
 import checklistRoutes from "./api/v1/routes/checklistRoutes.js";
-import createEventRoutes from "./api/v1/routes/createEventRoute.js";
+import createEventRoutes from "./api/v1/routes/eventRoutes.js";
 import availabilityRoutes from "./api/v1/routes/availabilityRoutes.js";
 
 // initialize express application
@@ -26,6 +27,9 @@ app.use(express.json());
 // This will refuse requests from origins that do not fulfill corsOptions requirements
 // see https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS
 app.use(cors(corsOptions));
+
+// add clerk middleware
+app.use(clerkMiddleware());
 
 // invoke swagger middleware for serving docs in /api-docs
 setupSwagger(app);

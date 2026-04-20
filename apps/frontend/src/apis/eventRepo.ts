@@ -4,11 +4,17 @@ type EventsResponseJSON = {message: string, data: Event[]};
 type EventResponseJSON = {message: string, data: Event};
 
 const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
-const EVENT_ENDPOINT = "/create-event"
+const EVENT_ENDPOINT = "/event/latest"
+const CREATE_EVENT_ENDPOINT = "/create-event"
 
-export async function fetchEvents(): Promise<Event[]> {
+export async function fetchEvents(token?: string|null): Promise<Event[]> {
     const eventResponse: Response = await fetch(
-        `${BASE_URL}${EVENT_ENDPOINT}`
+        `${BASE_URL}${EVENT_ENDPOINT}`,
+        {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        }
     );
 
     if(!eventResponse.ok) {
@@ -19,14 +25,15 @@ export async function fetchEvents(): Promise<Event[]> {
     return json.data;
 }
 
-export async function createEvent(event: Omit<Event, "id">) {
+export async function createEvent(event: Omit<Event, "id">, token?: string|null) {
     const eventResponse: Response = await fetch(
-        `${BASE_URL}${EVENT_ENDPOINT}`,
+        `${BASE_URL}${CREATE_EVENT_ENDPOINT}`,
         {
             method: "POST",
             body: JSON.stringify(event),
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
             }
         }
     );

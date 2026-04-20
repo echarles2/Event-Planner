@@ -16,7 +16,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Landing />}></Route>
-          <Route path="/create-event" element={<CreateEvent onCreateEvent={_event => console.log("Event created.")}/>}></Route>
+          <Route path="/create-event" element={<CreateEvent />}></Route>
           <Route path="/my-checklist" element={<ChecklistWrapper />}></Route>
           <Route path="/calendar" element={<CalendarComponent />}></Route>
         </Route>

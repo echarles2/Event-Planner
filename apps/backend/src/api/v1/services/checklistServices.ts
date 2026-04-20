@@ -1,12 +1,13 @@
 import prisma from "../../../../prisma/client.js";
-//import type { Checklist, ChecklistItem } from "../../../../generated/prisma/client";
 import { Checklist, ChecklistItem } from "../../../../generated/prisma/client.js";
+
 /**
  * Retrieves all checklists from storage
  * @returns Array of all checklists
  */
-export const getAllChecklists = async (): Promise<Checklist[]> => {
+export const getAllChecklists = async (userId: string): Promise<Checklist[]> => {
     return prisma.checklist.findMany({
+        where: { userId: userId },
         include: {
             items: true
         }
@@ -18,12 +19,14 @@ export const getAllChecklists = async (): Promise<Checklist[]> => {
  * @param checklistData - Object containing optional eventId
  * @returns - The newly created Checklist object
  */
-export const createChecklist = async (checklistData: {
+export const createChecklist = async (userId: string, 
+    checklistData: {
     eventId?: string;
 }): Promise<Checklist> => {
     // create a new checklist group
     const newChecklist: Checklist = await prisma.checklist.create({
         data: {
+            userId: userId,
             eventId: checklistData.eventId ?? null
         }
     });
@@ -53,7 +56,7 @@ export const createChecklistItem = async (checklistItemData: {
     // create a new checklist item
     const newChecklistItem: ChecklistItem = await prisma.checklistItem.create({
         data: {
-            checklistId:  checklistItemData.checklistId,
+            checklistId: checklistItemData.checklistId,
             item: checklistItemData.item,
             completed: false,
         }
@@ -88,11 +91,21 @@ export const updateChecklistItem = async (
  * Delete the Checklist group
  * @param id - the ID of the checklist to be deleted
  */
-export const deleteChecklist = async (id: string): Promise<void> => {
+export const deleteChecklist = async (
+    userId: string,
+    id: string
+): Promise<void> => {
     const checklist = await prisma.checklist.findUnique({ where: { id } });
-    if (!checklist) throw new Error(`Checklist with ID ${id} not found`);
+    if (!checklist) 
+        throw new Error(`Checklist with ID ${id} not found`);
+    if (checklist.userId !== userId) 
+        throw new Error("Unauthorized!");
 
-    await prisma.checklistItem.deleteMany({ where: { checklistId: id } });
+    await prisma.checklistItem.deleteMany({ 
+        where: { 
+            checklistId: id
+        } 
+    });
     await prisma.checklist.delete({ where: { id } });
 };
 
