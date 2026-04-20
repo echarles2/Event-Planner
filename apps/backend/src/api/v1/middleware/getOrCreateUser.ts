@@ -1,6 +1,6 @@
 import { getAuth } from "@clerk/express";
 import { Request, Response, NextFunction } from "express";
-import { checkAppUser } from "../services/userService";
+import { checkAppUser } from "../services/userService.js";
 
 export const getOrCreateUser = async(
     req: Request,
