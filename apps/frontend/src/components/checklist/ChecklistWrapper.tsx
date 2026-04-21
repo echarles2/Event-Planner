@@ -44,14 +44,17 @@ function ChecklistWrapper() {
 
         async function loadEvents() {
             try {
-                const data = await EventsRepo.fetchEvents();
+                const token = await getToken();
+                if (!token) return;
+
+                const data = await EventsRepo.fetchEvents(token);
                 setEvents(data);
             } catch (error) {
                 console.error("Failed to fetch events", error);
             }
         }
         loadEvents();
-    }, [isSignedIn]);
+    }, [getToken, isSignedIn]);
 
     // Group checklists by event using the service
     const grouped = groupChecklistsByEvent(checklists);
